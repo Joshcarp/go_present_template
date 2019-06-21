@@ -5,11 +5,17 @@ Joshua Carpeggiani
 Software Engineer, ANZ
 joshua.carpeggiani@anz.com
 
-* Numbers
+* Financial applications
+- Money, ints and floats
+- 10¢
+{
 
-- Banks and financial stuff
-- 
-- more bullets
-- a bullet with
+var a float64 = 0.1
+var b float64 = 0.3
 
+a + a + a == b //False
+package main
+
+log.Fatal(http.ListenAndServe(addr, nil))
+	}}
 *** Sub-subsection
