@@ -19,7 +19,21 @@ Title: something like "learning go through implementing a library"
     - IEEE 754R standard released in 2008
     - How this solves the 1/10th fraction issue
     - All base 2 numbers are represented in base 10
-- Go Goal; 128 Bit decimal floating point
+- Go Goal; Implement a 64 bit decimal floating point library
+    - Conform as closely to standard as practical
+- Journey starts:
+    - First off; Git and CI (not too much here)
+    - My plan "Write some test cases, Copy the code, change some 64's to 128's and done!"
+    - Test cases and all
+        - I had never used unit tests before
+            - "Think of all conceivable edge cases"
+            - Don't really know what this means, but start writing tests
+    - Find IBM test suite online
+
+
+
+
+128 Bit decimal floating point
     - Go doesn't support 128 bit integers
     - Concat of two 64 bit integers
 - Fixed precision decimal vs Floating point benchmark
