@@ -8,8 +8,8 @@ import (
 
 // Simple example of how 1/10th cannot be truly be represented in a floating point number
 func main() {
-	var a = 0.1
-	var b = 0.3
+	a := 0.1
+	b := 0.3
 	fmt.Println("Float datatype:")
 	fmt.Printf("%v + %v + %v == %v : %v\n", a, a, a, b, (a+a+a == b))
 	// // Printing out with 20 sig figs we can see where the problem is.
