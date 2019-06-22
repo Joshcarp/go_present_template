@@ -9,7 +9,16 @@ As the infamous example of the failings of floating point numbers go; `0.1 + 0.1
 I was studying for my algorithms exam when I learned this, it didn't make much sense to me at the time;
 - "Is this such a big problem, and if so, why is such a widely used "number" so fundamentally flawed?"
 And so a couple of months go by and I get the opportunity to do a summer internship, and I start researching.
-The problem goes; Computers count in base 2, so it's simply quick and easy to represent all aspects of a floating poiont number in base 2
+The problem goes; Computers count in base 2, so it's simply quick and easy to represent all components of a floating point number in base 2, although this is quick and easy, math gets  in the way.
+- The first standard of this was introduced in 1985 and was the first time where all programming languages could speak a common language when it came to non-integer values.
+- It had its fundamental problems, like the inability to represent decimal fractions
+    - Just like 1/3 can't be represented as a decimal number, `1/10` can't be represented in a binary one.
+    - In some cases this doesn't matter that much; any inaccuracies might cancel out; `1/10 * 10 == 1`
+    - But in some other cases it won't and the problem is compounded;
+        - Take an example of a system which counts every 10'th of a second
+        - To start with this may not be that much of a problem as the error might be tiny, but if we've got a system which relies on precise calculations, we can very quickly run into problems.
+        - for example; we've got some code which counts in 1/10th of a second, over 10 hours or so the actual time considered by the system is vastly off from the time we're expecting
+        - This was actually the case for an anti 
 
 
 
