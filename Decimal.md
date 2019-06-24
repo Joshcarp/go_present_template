@@ -18,7 +18,15 @@ The problem goes; Computers count in base 2, so it's simply quick and easy to re
         - Take an example of a system which counts every 10'th of a second
         - To start with this may not be that much of a problem as the error might be tiny, but if we've got a system which relies on precise calculations, we can very quickly run into problems.
         - for example; we've got some code which counts in 1/10th of a second, over 10 hours or so the actual time considered by the system is vastly off from the time we're expecting
-        - This was actually the case for an anti 
+        - This was actually the case for an anti missile defense system which had a system time which was 0.34 seconds out of sync, This error caused it to miss its target by around 500m.
+        - This could've been avoided many ways; one of them being using a decimal data type instead.
+So what's the solution?
+    - Instead of storing the number in base 2, we can store it as base 10, and our infamous problem is solved: `0.1 + 0.1 + 0.1 == 0.3`
+I started working on this project, and I was possibly the most confused i've been in a long, long time.
+I had the objective of implementing a the 754 2008 revision of the standard in golang, and that's where the journey began.
+I didn't start from complete scratch; I was given quite a substantial code base already, and for someone who's biggest project in programming was probably copying code into unity and making a game it was a huge task.
+So I started\
+
 
 
 
