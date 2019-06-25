@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"math"
 	"os"
 	"reflect"
@@ -27,7 +26,7 @@ type testCaseStrings struct {
 const PrintFiles bool = true
 const PrintTests bool = false
 const RunTests bool = true
-const IgnorePanics bool = true
+const IgnorePanics bool = false
 const IgnoreRounding bool = false
 
 var tests = []string{
@@ -46,42 +45,42 @@ var tests = []string{
 	// 	"dectest/ddMinus.decTest",
 }
 
-func (testVal testCaseStrings) String() string {
-	return fmt.Sprintf("%s %s %v %v %v -> %v\n", testVal.testName, testVal.testFunc, testVal.val1, testVal.val2, testVal.val3, testVal.expectedResult)
+type testcase struct {
+	op     string
+	v1, v2 interface{}
 }
 
-var supportedRounding = []string{"half_up", "half_even"}
-var ignoredFunctions = []string{"apply"}
+var typelist = []interface{}{decimal.Decimal64{}, 0.1, shop.Decimal{}}
 
 func BenchmarkSuiteANZ(b *testing.B) {
-	var testList [][2]interface{}
-	var typelist = []interface{}{decimal.Decimal64{}, 0.1, shop.Decimal{}}
-	type testcase struct {
-		op     string
-		v1, v2 interface{}
-	}
-	var typeMap map[reflect.Type][]testcase
+	// map a type (decimal.Decimal64 eg) to a list of testcases
+	typeMap := make(map[reflect.Type][]testcase)
 
-	var testfunc []string
+	// For every arithmetic test
 	for _, file := range tests {
 		f, _ := os.Open(file)
 		scanner := bufio.NewScanner(f)
+
 		for scanner.Scan() {
-			var twoVals [2]interface{}
 			testVal := getInput(scanner.Text())
+
+			// for every type
 			for _, t := range typelist {
+
+				// Convert string to type t
 				a, b := ParseDecimal(testVal.val1, testVal.val2, t)
-				testfunc = append(testfunc, testVal.testFunc)
-				testList = append(testList, twoVals)
-				typeMap[reflect.TypeOf(t)] = testcase{testVal.testFunc, a, b}
+
+				// Add to map
+				typeMap[reflect.TypeOf(t)] = append(typeMap[reflect.TypeOf(t)], testcase{testVal.testFunc, a, b})
 			}
 		}
+
+		// Run the arithmetic test of the seperate types
 		for _, t := range typelist {
 			b.Run(file+reflect.TypeOf(t).String(), func(b *testing.B) {
 				for j := 0; j < 500; j++ {
-					va1, typeMap[reflect.TypeOf(t)]
-					for i, val := range typeMap {
-						runtests(val[0], val[1], val[1], testfunc[i])
+					for _, test := range typeMap[reflect.TypeOf(t)] {
+						runtests(test.v1, test.v2, t, test.op)
 					}
 				}
 			})
@@ -90,6 +89,8 @@ func BenchmarkSuiteANZ(b *testing.B) {
 	}
 
 }
+
+// Parse the vals as type of interface v
 func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	switch v.(type) {
 	case decimal.Decimal64:
@@ -107,7 +108,14 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	return
 }
 
+// Run the tests
 func runtests(a, b, c interface{}, op string) {
+	if IgnorePanics {
+		defer func() {
+			if r := recover(); r != nil {
+			}
+		}()
+	}
 	switch a.(type) {
 	case decimal.Decimal64:
 		execOp(a.(decimal.Decimal64), b.(decimal.Decimal64), c.(decimal.Decimal64), op)
@@ -119,17 +127,9 @@ func runtests(a, b, c interface{}, op string) {
 	}
 }
 
-// TODO: get runTest to run more functions ssuch as FMA.
 func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
-	if IgnorePanics {
-		defer func() {
-			if r := recover(); r != nil {
-			}
-		}()
-	}
 	switch op {
 	case "add":
-
 		return a.Add(b)
 	case "multiply":
 		return a.Mul(b)
@@ -137,11 +137,6 @@ func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
 		return a.Abs()
 	case "divide":
 		return a.Quo(b)
-	// case "fma":
-	// 	return a.FMA(b, c)
-	// case "compare":
-	// 	a.Cmp(b)
-	// 	return decimal.Zero64
 	default:
 	}
 	return decimal.Zero64
@@ -162,8 +157,6 @@ func getInput(line string) testCaseStrings {
 			`(?:'?\s*->\s*'?)` + // matches the indicator to answer and surrounding whitespaces (?: non capturing group)
 			`(?P<expectedResult>\+?-?[^\r\n\t\f\v\' ]*)`) // matches the answer that's anything that is plus minus but not quotations
 
-	// Add regex to match to  rounding: rounding mode her
-
 	// capturing gorups are testName, testFunc, val1,  val2, and expectedResult)
 	ans := testRegex.FindStringSubmatch(line)
 	if len(ans) < 6 {
@@ -181,12 +174,6 @@ func getInput(line string) testCaseStrings {
 }
 
 func execOpFloat(a, b, c float64, op string) float64 {
-	if IgnorePanics {
-		defer func() {
-			if r := recover(); r != nil {
-			}
-		}()
-	}
 	switch op {
 	case "add":
 		return a + b
@@ -201,15 +188,7 @@ func execOpFloat(a, b, c float64, op string) float64 {
 	return 0
 }
 
-// TODO: get runTest to run more functions ssuch as FMA.
-// execOp returns the calculated answer to the operation as Decimal64.
 func execOpShop(a, b, c shop.Decimal, op string) shop.Decimal {
-	if IgnorePanics {
-		defer func() {
-			if r := recover(); r != nil {
-			}
-		}()
-	}
 	switch op {
 	case "add":
 		return a.Add(b)
