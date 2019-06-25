@@ -26,7 +26,7 @@ type testCaseStrings struct {
 const PrintFiles bool = true
 const PrintTests bool = false
 const RunTests bool = true
-const IgnorePanics bool = false
+const IgnorePanics bool = true
 const IgnoreRounding bool = false
 
 var tests = []string{
@@ -50,7 +50,7 @@ type testcase struct {
 	v1, v2 interface{}
 }
 
-var typelist = []interface{}{decimal.Decimal64{}, 0.1, shop.Decimal{}}
+var typelist = []interface{}{decimal.Decimal64{}, 0.0, shop.Decimal{}}
 
 func BenchmarkSuiteANZ(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
@@ -113,6 +113,7 @@ func runtests(a, b, c interface{}, op string) {
 	if IgnorePanics {
 		defer func() {
 			if r := recover(); r != nil {
+				// fmt.Println("ERROR: PANIC IN", op, a, b)
 			}
 		}()
 	}
