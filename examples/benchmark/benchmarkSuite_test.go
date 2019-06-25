@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"reflect"
 	"regexp"
 	"strconv"
 	"testing"
@@ -12,23 +13,6 @@ import (
 	"github.com/anz-bank/decimal"
 	shop "github.com/shopspring/decimal"
 )
-
-type decValContainer struct {
-	val1, val2, val3, expected, calculated decimal.Decimal64
-	calculatedString                       string
-	parseError                             error
-}
-
-type decValContainerFloat struct {
-	val1, val2, val3, expected, calculated float64
-	calculatedString                       string
-	parseError                             error
-}
-type decValContainerShop struct {
-	val1, val2, val3, expected, calculated shop.Decimal
-	calculatedString                       string
-	parseError                             error
-}
 
 type testCaseStrings struct {
 	testName       string
@@ -53,7 +37,7 @@ var tests = []string{
 	// "dectest/ddClass.decTest",
 	// TODO: Implement following tests
 	// "dectest/ddCompare.decTest",
-	// 	"dectest/ddAbs.decTest",
+	"dectest/ddAbs.decTest",
 	// 	"dectest/ddCopysign.decTest",
 	"dectest/ddDivide.decTest",
 	// 	"dectest/ddLogB.decTest",
@@ -69,71 +53,98 @@ func (testVal testCaseStrings) String() string {
 var supportedRounding = []string{"half_up", "half_even"}
 var ignoredFunctions = []string{"apply"}
 
-// TODO(joshcarp): This test cannot fail. Proper assertions will be added once the whole suite passes
-// TestFromSuite is the master tester for the dectest suite.
 func BenchmarkSuiteANZ(b *testing.B) {
-	var testList []decValContainer
-	var testStrings []testCaseStrings
+	var testList [][2]interface{}
+	var typelist = []interface{}{decimal.Decimal64{}, 0.1, shop.Decimal{}}
+	type testcase struct {
+		op     string
+		v1, v2 interface{}
+	}
+	var typeMap map[reflect.Type][]testcase
+
+	var testfunc []string
 	for _, file := range tests {
 		f, _ := os.Open(file)
 		scanner := bufio.NewScanner(f)
 		for scanner.Scan() {
+			var twoVals [2]interface{}
 			testVal := getInput(scanner.Text())
-			if testVal.testFunc != "" {
-				dec64vals := convertToDec64(testVal)
-				testList = append(testList, dec64vals)
-				testStrings = append(testStrings, testVal)
+			for _, t := range typelist {
+				a, b := ParseDecimal(testVal.val1, testVal.val2, t)
+				testfunc = append(testfunc, testVal.testFunc)
+				testList = append(testList, twoVals)
+				typeMap[reflect.TypeOf(t)] = testcase{testVal.testFunc, a, b}
 			}
 		}
-	}
-	b.ResetTimer()
-	for j := 0; j < 500; j++ {
-		for i, val := range testList {
-			runTest(val, testStrings[i])
+		for _, t := range typelist {
+			b.Run(file+reflect.TypeOf(t).String(), func(b *testing.B) {
+				for j := 0; j < 500; j++ {
+					va1, typeMap[reflect.TypeOf(t)]
+					for i, val := range typeMap {
+						runtests(val[0], val[1], val[1], testfunc[i])
+					}
+				}
+			})
 		}
+
 	}
+
 }
+func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
+	switch v.(type) {
+	case decimal.Decimal64:
+		a, _ = decimal.ParseDecimal64(val1)
+		b, _ = decimal.ParseDecimal64(val2)
+	case float64:
+		b, _ = strconv.ParseFloat(val2, 64)
+		a, _ = strconv.ParseFloat(val2, 64)
+	case shop.Decimal:
+		a, _ = shop.NewFromString(val1)
+		b, _ = shop.NewFromString(val2)
+	default:
 
-func BenchmarkSuiteFloat(b *testing.B) {
-	var testList []decValContainerFloat
-	var testStrings []testCaseStrings
-	for _, file := range tests {
-		f, _ := os.Open(file)
-		scanner := bufio.NewScanner(f)
-		for scanner.Scan() {
-			testVal := getInput(scanner.Text())
-
-			if testVal.testFunc != "" {
-				dec64vals := convertToDec64Float(testVal)
-				testList = append(testList, dec64vals)
-				testStrings = append(testStrings, testVal)
-			}
-		}
-	}
-	b.ResetTimer()
-	for j := 0; j < 500; j++ {
-		for i, val := range testList {
-			runTestFloat(val, testStrings[i])
-		}
-	}
-}
-
-func convertToDec64Float(testvals testCaseStrings) (dec64vals decValContainerFloat) {
-	var err1, err2, err3, expectedErr error
-	dec64vals.val1, err1 = strconv.ParseFloat(testvals.val1, 64)
-	dec64vals.val2, err2 = strconv.ParseFloat(testvals.val2, 64)
-	dec64vals.val3, err3 = strconv.ParseFloat(testvals.val3, 64)
-	dec64vals.expected, expectedErr = strconv.ParseFloat(testvals.expectedResult, 64)
-
-	if err1 != nil || err2 != nil || expectedErr != nil {
-		dec64vals.parseError = fmt.Errorf("error parsing in test: %s: \nval 1:%s: \nval 2: %s  \nval 3: %s\nexpected: %s ",
-			testvals.testName,
-			err1,
-			err2,
-			err3,
-			expectedErr)
 	}
 	return
+}
+
+func runtests(a, b, c interface{}, op string) {
+	switch a.(type) {
+	case decimal.Decimal64:
+		execOp(a.(decimal.Decimal64), b.(decimal.Decimal64), c.(decimal.Decimal64), op)
+	case float64:
+		execOpFloat(a.(float64), b.(float64), c.(float64), op)
+	case shop.Decimal:
+		execOpShop(a.(shop.Decimal), b.(shop.Decimal), c.(shop.Decimal), op)
+
+	}
+}
+
+// TODO: get runTest to run more functions ssuch as FMA.
+func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
+	if IgnorePanics {
+		defer func() {
+			if r := recover(); r != nil {
+			}
+		}()
+	}
+	switch op {
+	case "add":
+
+		return a.Add(b)
+	case "multiply":
+		return a.Mul(b)
+	case "abs":
+		return a.Abs()
+	case "divide":
+		return a.Quo(b)
+	// case "fma":
+	// 	return a.FMA(b, c)
+	// case "compare":
+	// 	a.Cmp(b)
+	// 	return decimal.Zero64
+	default:
+	}
+	return decimal.Zero64
 }
 
 // getInput gets the test file and extracts test using regex, then returns a map object and a list of test names.
@@ -155,14 +166,8 @@ func getInput(line string) testCaseStrings {
 
 	// capturing gorups are testName, testFunc, val1,  val2, and expectedResult)
 	ans := testRegex.FindStringSubmatch(line)
-
-	if len(ans) == 0 {
-		roundingRegex := regexp.MustCompile(`(?:rounding:[\s]*)(?P<rounding>[\S]*)`)
-		ans = roundingRegex.FindStringSubmatch(line)
-		if len(ans) == 0 {
-			return testCaseStrings{}
-		}
-		return testCaseStrings{rounding: ans[1]}
+	if len(ans) < 6 {
+		return testCaseStrings{}
 	}
 	data := testCaseStrings{
 		testName:       ans[1],
@@ -175,36 +180,7 @@ func getInput(line string) testCaseStrings {
 	return data
 }
 
-// convertToDec64 converts the map object strings to decimal64s.
-func convertToDec64(testvals testCaseStrings) (dec64vals decValContainer) {
-	var err1, err2, err3, expectedErr error
-	dec64vals.val1, err1 = decimal.ParseDecimal64(testvals.val1)
-	dec64vals.val2, err2 = decimal.ParseDecimal64(testvals.val2)
-	dec64vals.val3, err3 = decimal.ParseDecimal64(testvals.val3)
-	dec64vals.expected, expectedErr = decimal.ParseDecimal64(testvals.expectedResult)
-
-	if err1 != nil || err2 != nil || expectedErr != nil {
-		dec64vals.parseError = fmt.Errorf("error parsing in test: %s: \nval 1:%s: \nval 2: %s  \nval 3: %s\nexpected: %s ",
-			testvals.testName,
-			err1,
-			err2,
-			err3,
-			expectedErr)
-	}
-	return
-}
-
-// runTest completes the tests and returns a boolean and string on if the test passes.
-func runTest(testVals decValContainer, testValStrings testCaseStrings) {
-	execOp(testVals.val1, testVals.val2, testVals.val3, testValStrings.testFunc)
-}
-
-// runTest completes the tests and returns a boolean and string on if the test passes.
-func runTestFloat(testVals decValContainerFloat, testValStrings testCaseStrings) {
-	execOpFloat(testVals.val1, testVals.val2, testVals.val3, testValStrings.testFunc)
-}
-
-func execOpFloat(a, b, c float64, op string) decValContainerFloat {
+func execOpFloat(a, b, c float64, op string) float64 {
 	if IgnorePanics {
 		defer func() {
 			if r := recover(); r != nil {
@@ -213,97 +189,21 @@ func execOpFloat(a, b, c float64, op string) decValContainerFloat {
 	}
 	switch op {
 	case "add":
-		return decValContainerFloat{calculated: a + b}
+		return a + b
 	case "multiply":
-		return decValContainerFloat{calculated: a * b}
+		return a * b
 	case "abs":
-		return decValContainerFloat{calculated: math.Abs(a)}
+		return math.Abs(a)
 	case "divide":
-		return decValContainerFloat{calculated: a / b}
-	// case "fma":
-	// return decValContainer{calculated: a.FMA(b, c)}
-	// case "compare":
-	// 	return decValContainerFloat{calculatedString: fmt.Sprintf("%d", int64(a.Cmp(b)))}
+		return a / b
 	default:
 	}
-	return decValContainerFloat{calculated: 0}
-}
-
-// TODO: get runTest to run more functions ssuch as FMA.
-func execOp(a, b, c decimal.Decimal64, op string) decValContainer {
-	if IgnorePanics {
-		defer func() {
-			if r := recover(); r != nil {
-			}
-		}()
-	}
-	switch op {
-	case "add":
-		return decValContainer{calculated: a.Add(b)}
-	case "multiply":
-		return decValContainer{calculated: a.Mul(b)}
-	case "abs":
-		return decValContainer{calculated: a.Abs()}
-	case "divide":
-		return decValContainer{calculated: a.Quo(b)}
-	case "fma":
-		return decValContainer{calculated: a.FMA(b, c)}
-	case "compare":
-		return decValContainer{calculatedString: fmt.Sprintf("%d", int64(a.Cmp(b)))}
-	default:
-	}
-	return decValContainer{calculated: decimal.Zero64}
-}
-
-func BenchmarkSuiteShop(b *testing.B) {
-	var testList []decValContainerShop
-	var testStrings []testCaseStrings
-	for _, file := range tests {
-		f, _ := os.Open(file)
-		scanner := bufio.NewScanner(f)
-		for scanner.Scan() {
-			testVal := getInput(scanner.Text())
-
-			if testVal.testFunc != "" {
-				dec64vals := convertToShopDec64(testVal)
-				testList = append(testList, dec64vals)
-				testStrings = append(testStrings, testVal)
-			}
-		}
-	}
-	b.ResetTimer()
-	for j := 0; j < 500; j++ {
-		for i, val := range testList {
-			runTestShop(val, testStrings[i])
-		}
-	}
-}
-func convertToShopDec64(testvals testCaseStrings) (dec64vals decValContainerShop) {
-	var err1, err2, err3, expectedErr error
-	dec64vals.val1, err1 = shop.NewFromString(testvals.val1)
-	dec64vals.val2, err2 = shop.NewFromString(testvals.val2)
-	dec64vals.val3, err3 = shop.NewFromString(testvals.val3)
-	dec64vals.expected, expectedErr = shop.NewFromString(testvals.expectedResult)
-
-	if err1 != nil || err2 != nil || expectedErr != nil {
-		dec64vals.parseError = fmt.Errorf("error parsing in test: %s: \nval 1:%s: \nval 2: %s  \nval 3: %s\nexpected: %s ",
-			testvals.testName,
-			err1,
-			err2,
-			err3,
-			expectedErr)
-	}
-	return
-}
-
-// runTest completes the tests and returns a boolean and string on if the test passes.
-func runTestShop(testVals decValContainerShop, testValStrings testCaseStrings) {
-	execOpShop(testVals.val1, testVals.val2, testVals.val3, testValStrings.testFunc)
+	return 0
 }
 
 // TODO: get runTest to run more functions ssuch as FMA.
 // execOp returns the calculated answer to the operation as Decimal64.
-func execOpShop(a, b, c shop.Decimal, op string) decValContainerShop {
+func execOpShop(a, b, c shop.Decimal, op string) shop.Decimal {
 	if IgnorePanics {
 		defer func() {
 			if r := recover(); r != nil {
@@ -312,17 +212,13 @@ func execOpShop(a, b, c shop.Decimal, op string) decValContainerShop {
 	}
 	switch op {
 	case "add":
-		return decValContainerShop{calculated: a.Add(b)}
+		return a.Add(b)
 	case "multiply":
-		return decValContainerShop{calculated: a.Mul(b)}
+		return a.Mul(b)
 	case "abs":
-		return decValContainerShop{calculated: a.Abs()}
+		return a.Abs()
 	case "divide":
-		return decValContainerShop{calculated: a.Div(b)}
-		// case "fma":
-		// return decValContainerShop{calculated: a.FMA(b, c)}
-	case "compare":
-		return decValContainerShop{calculatedString: fmt.Sprintf("%d", int64(a.Cmp(b)))}
+		return a.Div(b)
 	}
-	return decValContainerShop{}
+	return shop.Zero
 }

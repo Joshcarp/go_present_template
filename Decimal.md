@@ -31,38 +31,40 @@ So I started\
 
 
 
-
-
+Hey all! So i’m going to submit a paper for the Gophercon on the topic of my experiences with learning go through the decimal project and focusing on some of the background behind floating point and decimal datatypes, Here's a quick dot point of what i've got so far for a 20-ish minute talk, any feedback would be awesome!
+```
 - Started with go in December 2018
 - Never worked on Go before, or even open source
 
-- The ending of Foundations of algorithms
+- The ending of one of my programming class:
     - Introduction to floating point data types before
-- The problems with floating point data types
-    - Numbers and stuff and how 10 isn't a power of 2
-    - Repeated fractions `1/3 --> 0.3333333`
-        - Example; `0.1 + 0.1 + 0.1 != 0.3` (in float)
+    - The problems with floating point data types
+    - Repeated fractions `1/3 --> 0.3333333`, 1/3 can't be exactly represented in a deicmal system
+    - 1/10 can't be exactly represented in a binary system
+    - Example; `0.1 + 0.1 + 0.1 != 0.3` (in float)
 - Real life example of bad code -> aviation and counting in 1/10th of a second
-    - How under many "normal" circumstances floating point errors will cancel out
+    - Compounding error can be a real problem
 
-- Solution
+- Solution, I had never been
     - Base 10 counting system instead of base 2
         - Example; `0.1 + 0.1 + 0.1 == 0.3` (in decimal)
     - IEEE 754R standard released in 2008
     - How this solves the 1/10th fraction issue
-    - All base 2 numbers are represented in base 10
-- Go Goal; Implement a 64 bit decimal floating point library
+    - Anatomy of a Decimal floating point number
+- My Goal; Implement a 64 bit decimal floating point library
     - Conform as closely to standard as practical
-- Journey starts:
-    - First off; Git and CI (not too much here)
     - My plan "Write some test cases, Copy the code, change some 64's to 128's and done!"
-    - Test cases and all
-        - I had never used unit tests before
-            - "Think of all conceivable edge cases"
-            - Don't really know what this means, but start writing tests
-    - Find IBM test suite online; _containing more than 81,300 tests_
-        - A lot more than I could probably think of in a summer internship
-
+    - I had never used unit tests before, let alone think about "Think of all conceivable edge cases"
+        - More math and some of the problems I encountered with go
+            - Inability to use 128 bit integers
+            - Some examples of how this stopped me
+    - Find IBM test suite online; "containing more than 81,300 tests"
+- Benchmarking different programming languages; float vs decimal
+- Benchmarking Other implementations in Go- https://github.com/shopspring/decimal
+- Why Go *should* have a built in datatype
+- How far the anz-bank/decimal has come, where it still needs to go
+- End
+```
 
 
 
