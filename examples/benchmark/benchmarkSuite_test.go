@@ -29,12 +29,12 @@ const RunTests bool = true
 const IgnorePanics bool = true
 const IgnoreRounding bool = false
 
-var tests = []string{
+var testPaths = []string{
 	"dectest/ddAdd.decTest",
 	"dectest/ddMultiply.decTest",
 	// "dectest/ddFMA.decTest",
 	// "dectest/ddClass.decTest",
-	// TODO: Implement following tests
+	// TODO: Implement following testPaths
 	// "dectest/ddCompare.decTest",
 	"dectest/ddAbs.decTest",
 	// 	"dectest/ddCopysign.decTest",
@@ -50,16 +50,21 @@ type testcase struct {
 	v1, v2 interface{}
 }
 
+var prettyNames = map[string]string{
+	"decimal.Decimal64": "anz-bank/decimal",
+	"float64":           "builtin/float64",
+	"decimal.Decimal":   "shopspring/decimal"}
+
 var typelist = []interface{}{decimal.Decimal64{}, 0.0, shop.Decimal{}}
 
-func BenchmarkSuiteANZ(b *testing.B) {
+func BenchmarkDecimal(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
 	typeMap := make(map[reflect.Type][]testcase)
 
 	// For every arithmetic test
-	for _, file := range tests {
-		f, _ := os.Open(file)
-		scanner := bufio.NewScanner(f)
+	for _, dectest := range testPaths {
+		file, _ := os.Open(dectest)
+		scanner := bufio.NewScanner(file)
 
 		for scanner.Scan() {
 			testVal := getInput(scanner.Text())
@@ -77,7 +82,8 @@ func BenchmarkSuiteANZ(b *testing.B) {
 
 		// Run the arithmetic test of the seperate types
 		for _, t := range typelist {
-			b.Run(file+reflect.TypeOf(t).String(), func(b *testing.B) {
+			b.Run(dectest+"_"+prettyNames[reflect.TypeOf(t).String()], func(b *testing.B) {
+				// Run tests 500 times
 				for j := 0; j < 500; j++ {
 					for _, test := range typeMap[reflect.TypeOf(t)] {
 						runtests(test.v1, test.v2, t, test.op)
@@ -108,7 +114,7 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	return
 }
 
-// Run the tests
+// Run the testPaths
 func runtests(a, b, c interface{}, op string) {
 	if IgnorePanics {
 		defer func() {
