@@ -21,7 +21,6 @@ type testCaseStrings struct {
 	val2           string
 	val3           string
 	expectedResult string
-	rounding       string
 }
 
 const IgnorePanics bool = true
@@ -112,7 +111,7 @@ func runtests(a, b, c interface{}, op string) {
 	if IgnorePanics {
 		defer func() {
 			if r := recover(); r != nil {
-				// fmt.Println("ERROR: PANIC IN", op, a, b)
+				// fmt.Println("ERROR: PANIC IN", op, a, b) // There are some issues here that i'm still debugging
 			}
 		}()
 	}
