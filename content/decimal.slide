@@ -41,14 +41,14 @@ joshua.carpeggiani@anz.com
 : Example; `0.1 + 0.1 + 0.1 != 0.3` (in float)
 
 * The problem with floating point numbers
-- Repeated fractions
 Repeated decimal numbers:
 .html numberHTML/110.html
 Repeated binary numbers:
 .html numberHTML/decFrac.html
 : Repeated fractions `1/3 --> 0.3333333`, 1/3 can't be exactly represented in a Decimal system
 * Why?
-- Enter math explanation here
+- Enter math explanation heres
+.html numberHTML/Sheet2.html
 * When does this matter?
 - Compounding errors
 - Need for exact numbers
