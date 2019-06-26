@@ -12,6 +12,6 @@ func main() {
 	b := decimal.MustParseDecimal64("0.3")
 	c := decimal.NewDecimal64FromInt64(3)
 
-	fmt.Printf("%f, %f, %f, %f, 3*a == b; %v\n", a, a, a, b, a.Mul(c) == b)
+	fmt.Printf("%.1f + %.1f + %.1f == %.1f; %v\n", a, a, a, b, c.Mul(a) == b)
 
 }
