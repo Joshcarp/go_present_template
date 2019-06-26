@@ -1,40 +1,31 @@
-Why (another) Decimal Data type in Go
-Tags: foo, bar, baz
+Another Decimal Library
+Tags: decimal, floating point, fixed precision, ieee 754R
 
 Joshua Carpeggiani
 Software Engineer, ANZ
 joshua.carpeggiani@anz.com
 
-* Financial applications
-- Money, ints and floats
-- 10¢
-
-.code ../examples/floatExample.go
 * Go and ANZ
 : Go taking off as programming language of choice at ANZ
 : Banks need decimal data types see later
 : Existing decimal datatypes slow
 : With Arbitrary precision comes great inefficiency
 
-* Another Decimal Library
+: Another Decimal Library
 : Open source project started by senior guy at anz without much time
 : Enter Josh
 : Started with go in December 2018
 : First time working on Go and open source
 
-*Correctness
+* Correctness
 
 * Scientific notation
 
-Consider number
 .html numberHTML/basic.html
-- This can be written as
-.html numberHTML/scientific.html
 
 * Binary floating point numbers
 .html numberHTML/basicBinary.html
-can be represented as
-.html numberHTML/floatingPoint.html
+: This number is equal to 9.3125
 
 * Example
 .play ../examples/floatExample.go /^func main/,/^}/
