@@ -92,24 +92,60 @@ Base 10 counting system instead of base 2
 - Resize before addition
 .html numberHTML/addition.html
 
+* Problems encountered
+- No uint128 builtin type
+- Testing
+- Resize before addition
+.html numberHTML/addition2.html
 
-Complete 64 bit data type
-Think of edge cases
-Copy the code, change some 64s to 128s and done!"
-How it’s hard; what made it hard
-More math and some of the problems I encountered with go
-Inability to use 128 bit integers
-Rounding and trying to find a way to keep information to round with later
-Some examples of how this stopped me
-Different arithmetic functions and how this library has a well rounded math library
-Some saving grace: Found IBM test suite online 81,300 test cases
+* Problems encountered
+- No uint128 builtin type
+- Testing
+- Resize before addition
+.html numberHTML/addition3.html
 
-Part 2: Speed
-Floating point arithmetic
-“Decoding” isn’t really needed
-Significand, bit shifts and exponent increases
-10 * 2 ** 0 == 1 (in binary)
-1 * 2 ** -1 == 1 (in binary)
+* Example
+.play ../examples/overflow.go /^func main/,/^}/
+
+- Could use big.int?
+* Big ints
+.code ../examples/bigInt.go
+
+- type which contains a slice, (pointer type) to point to uint
+- inefficent for small applications
+
+* Solution
+.code ../examples/uint218.go
+- Does make syntax a little tricky
+
+* Testing
+- IBM test suite online with _81,300_ test cases
+
+: Complete 64 bit data type
+- Think of edge cases
+: Copy the code, change some 64s to 128s and done!"
+: How it’s hard; what made it hard
+: More math and some of the problems I encountered with go
+: Inability to use 128 bit integers
+: Rounding and trying to find a way to keep information to round with later
+: Some examples of how this stopped me
+: Different arithmetic functions and how this library has a well rounded math library
+: Some saving grace:
+
+* Speed
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html numberHTML/floatingPointDecoding.html
+- Number of exponent is the same as the number of shifting places
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html numberHTML/floatingPointDecoding2.html
+.play ../examples/bitshifts.go /^func main/,/^}/
+
+
+: Significand, bit shifts and exponent increases
+: 10 * 2 ** 0 == 1 (in binary)
+: 1 * 2 ** -1 == 1 (in binary)
 Main take away; bit shifts are equal to increasing or decreasing the exponent, which makes many arithmetic operations super fast
 Decimal floating point arithmetic and why it’s slow
 Significand needs to be decoded into decimal, then the number undergoes binary multiplication by 10, then re encoded
