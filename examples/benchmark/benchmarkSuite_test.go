@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/anz-bank/decimal"
-	shop "github.com/shopspring/decimal"
+	shopspring "github.com/shopspring/decimal"
 )
 
 type testCaseStrings struct {
@@ -23,26 +23,13 @@ type testCaseStrings struct {
 	rounding       string
 }
 
-const PrintFiles bool = true
-const PrintTests bool = false
-const RunTests bool = true
 const IgnorePanics bool = true
-const IgnoreRounding bool = false
 
 var testPaths = []string{
 	"dectest/ddAdd.decTest",
 	"dectest/ddMultiply.decTest",
-	// "dectest/ddFMA.decTest",
-	// "dectest/ddClass.decTest",
-	// TODO: Implement following testPaths
-	// "dectest/ddCompare.decTest",
 	"dectest/ddAbs.decTest",
-	// 	"dectest/ddCopysign.decTest",
 	"dectest/ddDivide.decTest",
-	// 	"dectest/ddLogB.decTest",
-	// 	"dectest/ddMin.decTest",
-	// 	"dectest/ddMinMag.decTest",
-	// 	"dectest/ddMinus.decTest",
 }
 
 type testcase struct {
@@ -55,7 +42,7 @@ var prettyNames = map[string]string{
 	"float64":           "builtin/float64",
 	"decimal.Decimal":   "shopspring/decimal"}
 
-var typelist = []interface{}{decimal.Decimal64{}, 0.0, shop.Decimal{}}
+var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}}
 
 func BenchmarkDecimal(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
@@ -105,9 +92,9 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	case float64:
 		b, _ = strconv.ParseFloat(val2, 64)
 		a, _ = strconv.ParseFloat(val2, 64)
-	case shop.Decimal:
-		a, _ = shop.NewFromString(val1)
-		b, _ = shop.NewFromString(val2)
+	case shopspring.Decimal:
+		a, _ = shopspring.NewFromString(val1)
+		b, _ = shopspring.NewFromString(val2)
 	default:
 
 	}
@@ -128,25 +115,10 @@ func runtests(a, b, c interface{}, op string) {
 		execOp(a.(decimal.Decimal64), b.(decimal.Decimal64), c.(decimal.Decimal64), op)
 	case float64:
 		execOpFloat(a.(float64), b.(float64), c.(float64), op)
-	case shop.Decimal:
-		execOpShop(a.(shop.Decimal), b.(shop.Decimal), c.(shop.Decimal), op)
+	case shopspring.Decimal:
+		execOpShop(a.(shopspring.Decimal), b.(shopspring.Decimal), c.(shopspring.Decimal), op)
 
 	}
-}
-
-func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
-	switch op {
-	case "add":
-		return a.Add(b)
-	case "multiply":
-		return a.Mul(b)
-	case "abs":
-		return a.Abs()
-	case "divide":
-		return a.Quo(b)
-	default:
-	}
-	return decimal.Zero64
 }
 
 // getInput gets the test file and extracts test using regex, then returns a map object and a list of test names.
@@ -195,7 +167,7 @@ func execOpFloat(a, b, c float64, op string) float64 {
 	return 0
 }
 
-func execOpShop(a, b, c shop.Decimal, op string) shop.Decimal {
+func execOpShop(a, b, c shopspring.Decimal, op string) shopspring.Decimal {
 	switch op {
 	case "add":
 		return a.Add(b)
@@ -206,5 +178,19 @@ func execOpShop(a, b, c shop.Decimal, op string) shop.Decimal {
 	case "divide":
 		return a.Div(b)
 	}
-	return shop.Zero
+	return shopspring.Zero
+}
+func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
+	switch op {
+	case "add":
+		return a.Add(b)
+	case "multiply":
+		return a.Mul(b)
+	case "abs":
+		return a.Abs()
+	case "divide":
+		return a.Quo(b)
+	default:
+	}
+	return decimal.Zero64
 }
