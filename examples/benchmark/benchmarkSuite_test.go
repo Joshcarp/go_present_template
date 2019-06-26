@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/anz-bank/decimal"
+	ericlagergren "github.com/ericlagergren/decimal"
 	shopspring "github.com/shopspring/decimal"
 )
 
@@ -20,7 +21,6 @@ type testCaseStrings struct {
 	val2           string
 	val3           string
 	expectedResult string
-	rounding       string
 }
 
 const IgnorePanics bool = true
@@ -40,9 +40,10 @@ type testcase struct {
 var prettyNames = map[string]string{
 	"decimal.Decimal64": "anz-bank/decimal",
 	"float64":           "builtin/float64",
-	"decimal.Decimal":   "shopspring/decimal"}
+	"decimal.Decimal":   "shopspring/decimal",
+	"decimal.Big":       "ericlagergren/decimal"}
 
-var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}}
+var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}}
 
 func BenchmarkDecimal(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
@@ -95,6 +96,10 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	case shopspring.Decimal:
 		a, _ = shopspring.NewFromString(val1)
 		b, _ = shopspring.NewFromString(val2)
+	case ericlagergren.Big:
+		c := ericlagergren.Big{}
+		a, _ = c.SetString(val1)
+		b, _ = c.SetString(val2)
 	default:
 
 	}
@@ -106,7 +111,7 @@ func runtests(a, b, c interface{}, op string) {
 	if IgnorePanics {
 		defer func() {
 			if r := recover(); r != nil {
-				// fmt.Println("ERROR: PANIC IN", op, a, b)
+				// fmt.Println("ERROR: PANIC IN", op, a, b) // There are some issues here that i'm still debugging
 			}
 		}()
 	}
@@ -117,7 +122,8 @@ func runtests(a, b, c interface{}, op string) {
 		execOpFloat(a.(float64), b.(float64), c.(float64), op)
 	case shopspring.Decimal:
 		execOpShop(a.(shopspring.Decimal), b.(shopspring.Decimal), c.(shopspring.Decimal), op)
-
+	case ericlagergren.Big:
+		execOpEric(a.(ericlagergren.Big), b.(ericlagergren.Big), c.(ericlagergren.Big), op)
 	}
 }
 
@@ -151,7 +157,20 @@ func getInput(line string) testCaseStrings {
 	}
 	return data
 }
-
+func execOpEric(a, b, c ericlagergren.Big, op string) ericlagergren.Big {
+	switch op {
+	case "add":
+		return *a.Add(&a, &b)
+	case "multiply":
+		return *a.Mul(&a, &b)
+	case "abs":
+		return *a.Abs(&a)
+	case "divide":
+		return *a.Quo(&a, &b)
+	default:
+	}
+	return ericlagergren.Big{}
+}
 func execOpFloat(a, b, c float64, op string) float64 {
 	switch op {
 	case "add":

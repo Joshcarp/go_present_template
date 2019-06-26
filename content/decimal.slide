@@ -1,4 +1,4 @@
-A Decimal datatype in Go
+Why (another) Decimal Data type in Go
 Tags: foo, bar, baz
 
 Joshua Carpeggiani
@@ -8,14 +8,171 @@ joshua.carpeggiani@anz.com
 * Financial applications
 - Money, ints and floats
 - 10¢
-{
 
-var a float64 = 0.1
-var b float64 = 0.3
+.code ../examples/floatExample.go
+* Go and ANZ
+: Go taking off as programming language of choice at ANZ
+: Banks need decimal data types see later
+: Existing decimal datatypes slow
+: With Arbitrary precision comes great inefficiency
 
-a + a + a == b //False
-package main
+* Another Decimal Library
+: Open source project started by senior guy at anz without much time
+: Enter Josh
+: Started with go in December 2018
+: First time working on Go and open source
 
-log.Fatal(http.ListenAndServe(addr, nil))
-	}}
-*** Sub-subsection
+*Correctness
+
+* Scientific notation
+
+Consider number
+.html numberHTML/basic.html
+- This can be written as
+.html numberHTML/scientific.html
+
+* Binary floating point numbers
+.html numberHTML/basicBinary.html
+can be represented as
+.html numberHTML/floatingPoint.html
+
+* Example
+.play ../examples/floatExample.go /^func main/,/^}/
+- floats aren't sufficient
+
+: Fill in the backstory - why are floats not sufficient?
+: Recap on floating point data types before
+: The problems with floating point data types
+: 3 isn’t a factor of 10, so ⅓ can’t be represented exactly
+: 10 isn’t a power of 2 so 1/10 can’t be represented exactly
+
+: 1/10 can't be exactly represented in a binary system
+: Example; `0.1 + 0.1 + 0.1 != 0.3` (in float)
+
+* The problem with floating point numbers
+- Repeated fractions
+Repeated decimal numbers:
+.html numberHTML/110.html
+Repeated binary numbers:
+.html numberHTML/decFrac.html
+: Repeated fractions `1/3 --> 0.3333333`, 1/3 can't be exactly represented in a Decimal system
+* Why?
+- Enter math explanation here
+* When does this matter?
+- Compounding errors
+- Need for exact numbers
+
+.play ../examples/TimeRounding.go /^func main/,/^}/
+: Real life example of bad code -> aviation and counting in 1/10th of a second
+: Compounding error can be a real problem
+* Solution - Decimal datatype
+.html numberHTML/110decimal.html
+
+.play ../examples/decimalExample.go /^func main/,/^}/
+Base 10 counting system instead of base 2
+
+: Example; `0.1 + 0.1 + 0.1 == 0.3` (in decimal)
+- IEEE 754R standard released in 2008
+
+: How this solves the 1/10th fraction issue
+: Anatomy of a Decimal floating point number
+
+* Another Decimal library
+.link http://www.github.com/anz-bank/decimal
+
+- Project Goal: Implement a 64 & 128 bit decimal floating point library
+- Conform as closely to standard as practical
+
+: I came on board in december, and it was my first go project
+: The library already had quite a substantial code base
+
+* Problems encountered
+- No uint128 builtin type
+- Testing
+- Resize before addition
+.html numberHTML/addition.html
+
+* Problems encountered
+- No uint128 builtin type
+- Testing
+- Resize before addition
+.html numberHTML/addition2.html
+
+* Problems encountered
+- No uint128 builtin type
+- Testing
+- Resize before addition
+.html numberHTML/addition3.html
+
+* Example
+.play ../examples/overflow.go /^func main/,/^}/
+
+- Could use big.int?
+* Big ints
+.code ../examples/bigInt.go
+
+- type which contains a slice, (pointer type) to point to uint
+- inefficent for small applications
+
+* Solution
+.code ../examples/uint218.go
+- Does make syntax a little tricky
+
+* Testing
+- IBM test suite online with _81,300_ test cases
+
+: Complete 64 bit data type
+- Think of edge cases
+: Copy the code, change some 64s to 128s and done!"
+: How it’s hard; what made it hard
+: More math and some of the problems I encountered with go
+: Inability to use 128 bit integers
+: Rounding and trying to find a way to keep information to round with later
+: Some examples of how this stopped me
+: Different arithmetic functions and how this library has a well rounded math library
+: Some saving grace:
+
+* Speed
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html numberHTML/floatingPointDecoding.html
+- Number of exponent is the same as the number of shifting places
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html numberHTML/floatingPointDecoding2.html
+.play ../examples/bitshifts.go /^func main/,/^}/
+
+
+: Significand, bit shifts and exponent increases
+: 10 * 2 ** 0 == 1 (in binary)
+: 1 * 2 ** -1 == 1 (in binary)
+Main take away; bit shifts are equal to increasing or decreasing the exponent, which makes many arithmetic operations super fast
+Decimal floating point arithmetic and why it’s slow
+Significand needs to be decoded into decimal, then the number undergoes binary multiplication by 10, then re encoded
+This is slow in comparison
+“Big decimals” and how they work (really just listing these points)
+math/big → slice of bytes and does calculations from there
+Other implementations are based on big ints, which are
+Decimal(type big int) → nat → []word (type uint) (2 pointers)
+This is fundamentally slower, and takes up more space, even for an empty decimal
+Arithmetic needs to access slices, then calculate, then write to slice
+What would a go “style” decimal look like?
+Elegant and self contained, only making use of essential math/bits packages
+Simple uint64 type (decimal 128 type coming too)
+This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
+
+Benchmarking
+Benchmarking different programming languages;
+float64
+anz-bank/decimal
+shopspring/decimal
+ericlagergren/decimal
+Benchmark results (to be refined): Relative to float
+binary Float: 1
+anz-bank/decimal (fixed precision): 3.33
+shopspring/decimal (arbitrary precision):9
+
+How far the anz-bank/decimal has come, where it still needs to go
+Ambitious goal of including it in Go core language
+We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
+Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
