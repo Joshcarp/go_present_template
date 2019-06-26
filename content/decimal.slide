@@ -141,13 +141,32 @@ Base 10 counting system instead of base 2
 - “Decoding” isn’t really needed
 .html numberHTML/floatingPointDecoding2.html
 .play ../examples/bitshifts.go /^func main/,/^}/
-
-
 : Significand, bit shifts and exponent increases
 : 10 * 2 ** 0 == 1 (in binary)
 : 1 * 2 ** -1 == 1 (in binary)
-Main take away; bit shifts are equal to increasing or decreasing the exponent, which makes many arithmetic operations super fast
-Decimal floating point arithmetic and why it’s slow
+: Main take away; bit shifts are equal to increasing or decreasing the exponent, which makes many arithmetic operations super fast
+: Decimal floating point arithmetic and why it’s slow
+
+* Decimal equivalent
+.html numberHTML/decimalDecoding.html
+- Always going to be slower than floating point equivalent
+
+* Big Decimals
+- Based on big.int
+- Allows for arbitrary precision
+
+.code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
+
+.code ../examples/bigInt.go /^type Int struct/,/^}/
+
+- Walking pointers is inherently going to be slower
+
+* A decimal type optimized for performance
+.code ../examples/decimal.go /^type Decimal64 struct/,/^}/
+- Fast by intention, altough can only represent a max value of 999999999999999*10^384
+- Unlike big decimal which can represent arbitrarily large numbers
+- Hopefully decimal128 coming soon
+* Benchmarking
 Significand needs to be decoded into decimal, then the number undergoes binary multiplication by 10, then re encoded
 This is slow in comparison
 “Big decimals” and how they work (really just listing these points)
