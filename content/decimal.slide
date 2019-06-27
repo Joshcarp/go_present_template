@@ -175,18 +175,22 @@ Base 10 counting system instead of base 2
 - ericlagergren/decimal
 
 * Benchmark Abs
+- lower is better
 
 .image img/Abs.png 500 _
 
 * Benchmark Multiply
+- lower is better
 
 .image img/Multiply.png 500 _
 
 * Benchmark Divide
+- lower is better
 
 .image img/Divide.png 500 _
 
 * Benchmark Add
+- lower is better
 
 .image img/Add.png 500 _
 
