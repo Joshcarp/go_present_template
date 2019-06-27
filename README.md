@@ -1,7 +1,8 @@
 # decimal-slides
 Slides and examples for gophercon
-- install go present with https://github.com/golang/talks
-- info about markup language used in https://godoc.org/golang.org/x/tools/present
+- go present is used:
+- install https://github.com/golang/talks
+- godoc https://godoc.org/golang.org/x/tools/present
 
 # Useful resources
 
@@ -24,6 +25,10 @@ Arbitrary precision implementations of decimal:
 IEEE 754R standard (also known as IEEE 754-2008):
 <https://ieeexplore.ieee.org/document/4610935>
 
+# Other decimal libraries cited
+<https://github.com/ericlagergren/decimal>
+
+<https://github.com/shopspring/decimal>
 
 
 # Notes
