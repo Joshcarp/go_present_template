@@ -53,7 +53,6 @@ def generate_graph(responsetime_filename):
         plt.xticks(x, element.LibraryName)
         plt.xticks(rotation=10)
         plt.title(name + " Benchmark")
-        plt.xlabel('Library')
         plt.ylabel('Time taken (ns)')
         plt.savefig(os.path.abspath('../../content/')+f"/img/{name}.png", dpi=300, figsize=(50,25))
 
