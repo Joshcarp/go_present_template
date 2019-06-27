@@ -57,15 +57,16 @@ func BenchmarkDecimal(b *testing.B) {
 
 		for scanner.Scan() {
 			testVal := getInput(scanner.Text())
+			if testVal.testName != "" {
+				// for every type
+				for _, t := range typelist {
 
-			// for every type
-			for _, t := range typelist {
+					// Convert string to type t
+					a, b := ParseDecimal(testVal.val1, testVal.val2, t)
 
-				// Convert string to type t
-				a, b := ParseDecimal(testVal.val1, testVal.val2, t)
-
-				// Add to map
-				typeMap[reflect.TypeOf(t)] = append(typeMap[reflect.TypeOf(t)], testcase{testVal.testFunc, a, b})
+					// Add to map
+					typeMap[reflect.TypeOf(t)] = append(typeMap[reflect.TypeOf(t)], testcase{testVal.testFunc, a, b})
+				}
 			}
 		}
 
@@ -99,8 +100,14 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 		b, _ = shopspring.NewFromString(val2)
 	case ericlagergren.Big:
 		c := ericlagergren.Big{}
+		d := ericlagergren.Big{}
+		// var err, err2 bool
 		a, _ = c.SetString(val1)
-		b, _ = c.SetString(val2)
+		b, _ = d.SetString(val2)
+
+		if a == nil || b == nil {
+			panic(val1 + val2)
+		}
 	default:
 
 	}

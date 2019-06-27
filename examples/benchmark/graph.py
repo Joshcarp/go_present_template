@@ -53,7 +53,7 @@ def generate_graph(responsetime_filename):
         plt.xticks(x, element.LibraryName)
         plt.xticks(rotation=10)
         plt.title(name + " Benchmark")
-        plt.ylabel('Time taken (ns)')
+        # plt.ylabel('Time taken (ns)')
         plt.savefig(os.path.abspath('../../content/')+f"/img/{name}.png", dpi=300, figsize=(50,25))
 
 # os.system("go test -bench=. > results.txt")
