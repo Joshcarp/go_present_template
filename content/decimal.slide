@@ -122,6 +122,33 @@ Base 10 counting system instead of base 2
 : Some saving grace:
 
 * Speed
+* Benchmarking
+: Benchmarking different programming languages;
+- float64
+- anz-bank/decimal
+- shopspring/decimal
+- ericlagergren/decimal
+
+* Benchmark Abs
+- lower is better
+
+.image img/Abs.png 500 _
+
+* Benchmark Multiply
+- lower is better
+
+.image img/Multiply.png 500 _
+
+* Benchmark Divide
+- lower is better
+
+.image img/Divide.png 500 _
+
+* Benchmark Add
+- lower is better
+
+.image img/Add.png 500 _
+
 * Floating point arithmetic
 - “Decoding” isn’t really needed
 .html numberHTML/floatingPointDecoding.html
@@ -167,32 +194,7 @@ Base 10 counting system instead of base 2
 : Simple uint64 type (decimal 128 type coming too)
 : This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
 
-* Benchmarking
-: Benchmarking different programming languages;
-- float64
-- anz-bank/decimal
-- shopspring/decimal
-- ericlagergren/decimal
 
-* Benchmark Abs
-- lower is better
-
-.image img/Abs.png 500 _
-
-* Benchmark Multiply
-- lower is better
-
-.image img/Multiply.png 500 _
-
-* Benchmark Divide
-- lower is better
-
-.image img/Divide.png 500 _
-
-* Benchmark Add
-- lower is better
-
-.image img/Add.png 500 _
 
 * In the future
 : How far the anz-bank/decimal has come, where it still needs to go
