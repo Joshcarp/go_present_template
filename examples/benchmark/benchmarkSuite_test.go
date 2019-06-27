@@ -165,19 +165,19 @@ func getInput(line string) testCaseStrings {
 	}
 	return data
 }
-func execOpEric(a, b, c ericlagergren.Big, op string) *ericlagergren.Big {
+func execOpEric(a, b, c ericlagergren.Big, op string) ericlagergren.Big {
 	switch op {
 	case "add":
-		return a.Add(&a, &b)
+		return *a.Add(&a, &b)
 	case "multiply":
-		return a.Mul(&a, &b)
+		return *a.Mul(&a, &b)
 	case "abs":
-		return a.Abs(&a)
+		return *a.Abs(&a)
 	case "divide":
-		return a.Quo(&a, &b)
+		return *a.Quo(&a, &b)
 	default:
 	}
-	return &ericlagergren.Big{}
+	return ericlagergren.Big{}
 }
 func execOpFloat(a, b, c float64, op string) float64 {
 	switch op {

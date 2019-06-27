@@ -56,7 +56,7 @@ def generate_graph(responsetime_filename):
         # plt.ylabel('Time taken (ns)')
         plt.savefig(os.path.abspath('../../content/')+f"/img/{name}.png", dpi=300, figsize=(50,25))
 
-# os.system("go test -bench=. > results.txt")
+os.system("go test -bench=. > results.txt")
 c = convertToCsv("results.txt")
 
 generate_graph("results.csv")
