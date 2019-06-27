@@ -22,28 +22,8 @@ def convertToCsv(filename):
     matches = re.finditer(regex, line)
     for mat in matches:
         c.writerow([mat.group("TestName"), mat.group("LibraryName"), mat.group("iterations"), mat.group("time")])
-
-
-    # original = [l.strip("BenchmarkDecimal/dd") for l in original]
-    # re.
-    # lst = [line.split() for line in original]
-    # lst = original
-    # # print(lst)
-    # for element in lst:
-    #     print(element)
-    #     c.writerow(element)
-    # # output.close()
     output.close()
-    # original.close()
     return
-    # close(output)
-    # row, numTests, time = [], [], []
-    # for i in range(len(lst)):
-    #     name += lst[i][0]
-    #     numTests += lst[i][1]
-    #     time += lst[i][2]
-
-
 
 
 
@@ -67,7 +47,7 @@ def generate_graph(responsetime_filename):
         plt.figure(figsize=(10,6))
         x = np.arange(len(element.index))
         bar_lst = plt.bar(x, element.time.tolist())
-        colors = cycle(['b','r','g','m'])
+        colors = cycle([(232/255, 62/255, 93/255, 0.3),(65/255, 186/255, 99/255, 0.3),(87/255, 126/255, 199/255, 0.3),(232/255, 165/255, 0, 0.3)])
         for i in range(len(bar_lst)):
             bar_lst[i].set_color(next(colors))
         plt.xticks(x, element.LibraryName)
@@ -76,16 +56,6 @@ def generate_graph(responsetime_filename):
         plt.xlabel('Library')
         plt.ylabel('Time taken (ns)')
         plt.savefig(os.path.abspath('../../content/')+f"/img/{name}.png", dpi=300, figsize=(50,25))
-
-
-    # /Users/carpeggj/Documents/Programming/decimal-slides/content/img/BinDec.png
-    # plt.plot(data.numRequests.tolist(), data.java_95.div(1000).tolist(), "^", label = "Java 95th percentile", color='#ff9721')
-    # plt.title('Java vs Go server response time')
-    # plt.ylabel('Time taken (s)')
-    # plt.xticks(ticks = [x for x in range(request_range[0], request_range[1], request_range[2]*2)])
-    # plt.savefig(os.path.abspath('../../content/')+"/img/benchmark.png", dpi=300, bbox_inches='tight', figsize=(50,25))
-
-
 
 # os.system("go test -bench=. > results.txt")
 c = convertToCsv("results.txt")
