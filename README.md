@@ -11,6 +11,9 @@ anz-bank decimal github repo:
 Very nice math explanation:
 <https://stackoverflow.com/questions/1089018/why-cant-decimal-numbers-be-represented-exactly-in-binary>
 
+Great blog on floating point:
+<https://ciechanow.ski/exposing-floating-point/>
+
 IBM resource and supplier of test suite used for benchmarking:
 <http://speleotrove.com/decimal/>
 
@@ -20,6 +23,8 @@ Arbitrary precision implementations of decimal:
 
 IEEE 754R standard (also known as IEEE 754-2008):
 <https://ieeexplore.ieee.org/document/4610935>
+
+
 
 # Notes
 Notes are in a google doc:

@@ -185,3 +185,10 @@ shopspring/decimal (arbitrary precision):9
 - Would boost adoption in financial sector
 : We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
 : Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
+
+* Links
+- Graphics from
+.link https://ciechanow.ski/exposing-floating-point/
+
+- Github
+.link https://github.com/anz-bank/decimal
