@@ -18,6 +18,10 @@ joshua.carpeggiani@anz.com
 : First time working on Go and open source
 
 * Correctness
+* Floating point numbers
+.html numberHTML/floatingpointbits.html
+.play ../examples/floatExample.go /^func main/,/^}/
+- floats aren't sufficient
 
 * Scientific notation
 
@@ -27,9 +31,6 @@ joshua.carpeggiani@anz.com
 .html numberHTML/basicBinary.html
 : This number is equal to 9.3125
 
-* Example
-.play ../examples/floatExample.go /^func main/,/^}/
-- floats aren't sufficient
 
 : Fill in the backstory - why are floats not sufficient?
 : Recap on floating point data types before
@@ -175,7 +176,13 @@ Base 10 counting system instead of base 2
 
 .code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
 
-.code ../examples/bigInt.go /^type Int struct/,/^}/
+.code ../examples/bigInt.go /(?s)type Int struct {(.*)/
+
+
+
+
+
+
 : “Big decimals” and how they work (really just listing these points)
 : math/big → slice of bytes and does calculations from there
 : Other implementations are based on big ints, which are
