@@ -1,0 +1,20 @@
+goos: darwin
+goarch: amd64
+BenchmarkDecimal/ddAdd.decTest_anz-8         	    5000	    299965 ns/op
+BenchmarkDecimal/ddAdd.decTest_float64-8     	   20000	     77365 ns/op
+BenchmarkDecimal/ddAdd.decTest_shopspringDecimal-8         	    2000	    632131 ns/op
+BenchmarkDecimal/ddAdd.decTest_ericlagergrenDecimal-8      	   20000	     60149 ns/op
+BenchmarkDecimal/ddMultiply.decTest_anz-8                  	    5000	    358386 ns/op
+BenchmarkDecimal/ddMultiply.decTest_float64-8              	   20000	     95709 ns/op
+BenchmarkDecimal/ddMultiply.decTest_shopspringDecimal-8    	    2000	    790659 ns/op
+BenchmarkDecimal/ddMultiply.decTest_ericlagergrenDecimal-8 	   20000	     86586 ns/op
+BenchmarkDecimal/ddAbs.decTest_anz-8                       	    5000	    361372 ns/op
+BenchmarkDecimal/ddAbs.decTest_float64-8                   	   10000	    105923 ns/op
+BenchmarkDecimal/ddAbs.decTest_shopspringDecimal-8         	    2000	    743961 ns/op
+BenchmarkDecimal/ddAbs.decTest_ericlagergrenDecimal-8      	   20000	     91652 ns/op
+BenchmarkDecimal/ddDivide.decTest_anz-8                    	    2000	    801937 ns/op
+BenchmarkDecimal/ddDivide.decTest_float64-8                	   10000	    150518 ns/op
+BenchmarkDecimal/ddDivide.decTest_shopspringDecimal-8      	    1000	   1360224 ns/op
+BenchmarkDecimal/ddDivide.decTest_ericlagergrenDecimal-8   	   10000	    142059 ns/op
+PASS
+ok  	_/Users/carpeggj/Documents/Programming/decimal-slides/examples/benchmark	29.728s

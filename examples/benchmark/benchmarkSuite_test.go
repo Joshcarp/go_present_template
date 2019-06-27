@@ -26,11 +26,12 @@ type testCaseStrings struct {
 const IgnorePanics bool = true
 
 var testPaths = []string{
-	"dectest/ddAdd.decTest",
-	"dectest/ddMultiply.decTest",
-	"dectest/ddAbs.decTest",
-	"dectest/ddDivide.decTest",
+	"ddAdd.decTest",
+	"ddMultiply.decTest",
+	"ddAbs.decTest",
+	"ddDivide.decTest",
 }
+var testPathdir = "dectest/"
 
 type testcase struct {
 	op     string
@@ -38,10 +39,10 @@ type testcase struct {
 }
 
 var prettyNames = map[string]string{
-	"decimal.Decimal64": "anz-bank/decimal",
-	"float64":           "builtin/float64",
-	"decimal.Decimal":   "shopspring/decimal",
-	"decimal.Big":       "ericlagergren/decimal"}
+	"decimal.Decimal64": "anz",
+	"float64":           "float64",
+	"decimal.Decimal":   "shopspringDecimal",
+	"decimal.Big":       "ericlagergrenDecimal"}
 
 var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}}
 
@@ -51,7 +52,7 @@ func BenchmarkDecimal(b *testing.B) {
 
 	// For every arithmetic test
 	for _, dectest := range testPaths {
-		file, _ := os.Open(dectest)
+		file, _ := os.Open(testPathdir + dectest)
 		scanner := bufio.NewScanner(file)
 
 		for scanner.Scan() {
@@ -72,7 +73,7 @@ func BenchmarkDecimal(b *testing.B) {
 		for _, t := range typelist {
 			b.Run(dectest+"_"+prettyNames[reflect.TypeOf(t).String()], func(b *testing.B) {
 				// Run tests 500 times
-				for j := 0; j < 500; j++ {
+				for j := 0; j < b.N; j++ {
 					for _, test := range typeMap[reflect.TypeOf(t)] {
 						runtests(test.v1, test.v2, t, test.op)
 					}
@@ -157,19 +158,19 @@ func getInput(line string) testCaseStrings {
 	}
 	return data
 }
-func execOpEric(a, b, c ericlagergren.Big, op string) ericlagergren.Big {
+func execOpEric(a, b, c ericlagergren.Big, op string) *ericlagergren.Big {
 	switch op {
 	case "add":
-		return *a.Add(&a, &b)
+		return a.Add(&a, &b)
 	case "multiply":
-		return *a.Mul(&a, &b)
+		return a.Mul(&a, &b)
 	case "abs":
-		return *a.Abs(&a)
+		return a.Abs(&a)
 	case "divide":
-		return *a.Quo(&a, &b)
+		return a.Quo(&a, &b)
 	default:
 	}
-	return ericlagergren.Big{}
+	return &ericlagergren.Big{}
 }
 func execOpFloat(a, b, c float64, op string) float64 {
 	switch op {
