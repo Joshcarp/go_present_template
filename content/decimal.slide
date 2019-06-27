@@ -47,9 +47,11 @@ Repeated binary numbers:
 .html numberHTML/decFrac.html
 : Repeated fractions `1/3 --> 0.3333333`, 1/3 can't be exactly represented in a Decimal system
 * Why?
-- Enter math explanation heres
 .html numberHTML/Sheet2.html
+* Why?
+.image img/BinDec.png _ 500
 * When does this matter?
+
 - Compounding errors
 - Need for exact numbers
 
@@ -78,20 +80,14 @@ Base 10 counting system instead of base 2
 : The library already had quite a substantial code base
 
 * Problems encountered
-- No uint128 builtin type
-- Testing
 - Resize before addition
 .html numberHTML/addition.html
 
 * Problems encountered
-- No uint128 builtin type
-- Testing
 - Resize before addition
 .html numberHTML/addition2.html
 
 * Problems encountered
-- No uint128 builtin type
-- Testing
 - Resize before addition
 .html numberHTML/addition3.html
 
@@ -108,9 +104,11 @@ Base 10 counting system instead of base 2
 * Solution
 .code ../examples/uint218.go
 - Does make syntax a little tricky
+- go doesn't support operator overloading
 
 * Testing
 - IBM test suite online with _81,300_ test cases
+.link http://speleotrove.com/decimal/
 
 : Complete 64 bit data type
 - Think of edge cases
@@ -141,6 +139,8 @@ Base 10 counting system instead of base 2
 * Decimal equivalent
 .html numberHTML/decimalDecoding.html
 - Always going to be slower than floating point equivalent
+: Significand needs to be decoded into decimal, then the number undergoes binary multiplication by 10, then re encoded
+: This is slow in comparison
 
 * Big Decimals
 - Based on big.int
@@ -149,7 +149,12 @@ Base 10 counting system instead of base 2
 .code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
 
 .code ../examples/bigInt.go /^type Int struct/,/^}/
-
+: “Big decimals” and how they work (really just listing these points)
+: math/big → slice of bytes and does calculations from there
+: Other implementations are based on big ints, which are
+: Decimal(type big int) → nat → []word (type uint) (2 pointers)
+: This is fundamentally slower, and takes up more space, even for an empty decimal
+: Arithmetic needs to access slices, then calculate, then write to slice
 - Walking pointers is inherently going to be slower
 
 * A decimal type optimized for performance
@@ -157,32 +162,26 @@ Base 10 counting system instead of base 2
 - Fast by intention, altough can only represent a max value of 999999999999999*10^384
 - Unlike big decimal which can represent arbitrarily large numbers
 - Hopefully decimal128 coming soon
-* Benchmarking
-Significand needs to be decoded into decimal, then the number undergoes binary multiplication by 10, then re encoded
-This is slow in comparison
-“Big decimals” and how they work (really just listing these points)
-math/big → slice of bytes and does calculations from there
-Other implementations are based on big ints, which are
-Decimal(type big int) → nat → []word (type uint) (2 pointers)
-This is fundamentally slower, and takes up more space, even for an empty decimal
-Arithmetic needs to access slices, then calculate, then write to slice
-What would a go “style” decimal look like?
-Elegant and self contained, only making use of essential math/bits packages
-Simple uint64 type (decimal 128 type coming too)
-This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
+: What would a go “style” decimal look like?
+: Elegant and self contained, only making use of essential math/bits packages
+: Simple uint64 type (decimal 128 type coming too)
+: This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
 
-Benchmarking
-Benchmarking different programming languages;
-float64
-anz-bank/decimal
-shopspring/decimal
-ericlagergren/decimal
-Benchmark results (to be refined): Relative to float
+* Benchmarking
+: Benchmarking different programming languages;
+- float64
+- anz-bank/decimal
+- shopspring/decimal
+- ericlagergren/decimal
+
+* Benchmark results (to be refined): Relative to float
 binary Float: 1
 anz-bank/decimal (fixed precision): 3.33
 shopspring/decimal (arbitrary precision):9
 
-How far the anz-bank/decimal has come, where it still needs to go
-Ambitious goal of including it in Go core language
-We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
-Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
+* In the future
+: How far the anz-bank/decimal has come, where it still needs to go
+- go core?
+- Would boost adoption in financial sector
+: We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
+: Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
