@@ -1,12 +1,9 @@
 import csv
 import os
-
 import pandas
 import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
-import matplotlib.pyplot as plt
 import numpy as np
-from itertools import *
+from itertools import cycle
 import re
 
 def convertToCsv(filename):
@@ -16,7 +13,6 @@ def convertToCsv(filename):
     next(original)
     next(original)
     c.writerow(["TestName", "LibraryName", "iterations", "time"])
-    # original = list(original)[2:-2]
     line = original.read()
     regex = r"(?:BenchmarkDecimal\/dd)(?P<TestName>\w*)(?:.decTest_)(?P<LibraryName>\w*)(?:-\d\s*)(?P<iterations>\d*)(?:\s*)(?P<time>\d*)"
     matches = re.finditer(regex, line)
@@ -31,19 +27,11 @@ def convertToCsv(filename):
 
 def generate_graph(responsetime_filename):
     data = pandas.read_csv(responsetime_filename)
-    for element in data:
+
+    operations = data.TestName.unique()
+    for operation in operations:
+        element = data.loc[data["TestName"] == operation]
         print(element)
-
-
-    Add = data.loc[data["TestName"] == "Add"]
-    Multiply = data.loc[data["TestName"] == "Multiply"]
-    Abs = data.loc[data["TestName"] == "Abs"]
-    Divide = data.loc[data["TestName"] == "Divide"]
-    Graphs = [Add, Multiply, Abs, Divide]
-
-    for element in Graphs:
-        print(element)
-        name = element.iloc[1]["TestName"]
         plt.figure(figsize=(10,6))
         x = np.arange(len(element.index))
         bar_lst = plt.bar(x, element.time.tolist())
@@ -52,11 +40,10 @@ def generate_graph(responsetime_filename):
             bar_lst[i].set_color(next(colors))
         plt.xticks(x, element.LibraryName)
         plt.xticks(rotation=10)
-        plt.title(name + " Benchmark")
-        # plt.ylabel('Time taken (ns)')
-        plt.savefig(os.path.abspath('../../content/')+f"/img/{name}.png", dpi=300, figsize=(50,25))
+        plt.title(operation + " Benchmark")
+        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}.png", dpi=300, figsize=(50,25))
 
-os.system("go test -bench=. > results.txt")
-c = convertToCsv("results.txt")
-
-generate_graph("results.csv")
+if __name__ == "__main__":
+    # os.system("go test -bench=. > results.txt")
+    convertToCsv("results.txt")
+    generate_graph("results.csv")
