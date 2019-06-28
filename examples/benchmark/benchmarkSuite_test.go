@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"testing"
 
+	apd "github.com/cockroachdb/apd"
+
 	"github.com/anz-bank/decimal"
 	ericlagergren "github.com/ericlagergren/decimal"
 	shopspring "github.com/shopspring/decimal"
@@ -42,9 +44,10 @@ var prettyNames = map[string]string{
 	"decimal.Decimal64": "anz",
 	"float64":           "float64",
 	"decimal.Decimal":   "shopspringDecimal",
-	"decimal.Big":       "ericlagergrenDecimal"}
+	"decimal.Big":       "ericlagergrenDecimal",
+	"apd.Decimal":       "apdDecimal"}
 
-var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}}
+var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}, apd.Decimal{}}
 
 func BenchmarkDecimal(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
@@ -101,13 +104,12 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	case ericlagergren.Big:
 		c := ericlagergren.Big{}
 		d := ericlagergren.Big{}
-		// var err, err2 bool
 		a, _ = c.SetString(val1)
 		b, _ = d.SetString(val2)
+	case apd.Decimal:
+		a, _, _ = apd.NewFromString(val1)
+		b, _, _ = apd.NewFromString(val2)
 
-		if a == nil || b == nil {
-			panic(val1 + val2)
-		}
 	default:
 
 	}
@@ -132,6 +134,8 @@ func runtests(a, b, c interface{}, op string) {
 		execOpShop(a.(shopspring.Decimal), b.(shopspring.Decimal), c.(shopspring.Decimal), op)
 	case ericlagergren.Big:
 		execOpEric(a.(ericlagergren.Big), b.(ericlagergren.Big), c.(ericlagergren.Big), op)
+	case apd.Decimal:
+		execOpAdp(a.(apd.Decimal), b.(apd.Decimal), c.(apd.Decimal), op)
 	}
 }
 
@@ -220,4 +224,22 @@ func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
 	default:
 	}
 	return decimal.Zero64
+}
+func execOpAdp(a, b, c apd.Decimal, op string) apd.Decimal {
+	switch op {
+	case "add":
+		r := apd.ErrDecimal{}
+		return *r.Add(&a, &a, &b)
+	case "multiply":
+		r := apd.ErrDecimal{}
+		return *r.Mul(&a, &a, &b)
+	case "abs":
+		r := apd.ErrDecimal{}
+		return *r.Abs(&a, &b)
+	case "divide":
+		r := apd.ErrDecimal{}
+		return *r.Quo(&a, &a, &b)
+	default:
+	}
+	return apd.Decimal{}
 }
