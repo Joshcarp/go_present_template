@@ -129,6 +129,9 @@ Base 10 counting system instead of base 2
 - anz-bank/decimal
 - shopspring/decimal
 - ericlagergren/decimal
+- Benchmarks are still being debugged and I am not currently confident in the results
+- Benchmarks are located at
+.link https://github.com/joshcarp/decimal-slides
 
 * Benchmark Abs
 - lower is better
