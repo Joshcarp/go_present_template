@@ -1,5 +1,5 @@
 # decimal-slides
-LINK TO PRESENTATION: <http://joshcarp.xyz/>
+LINK TO PRESENTATION: <http://gophercon.joshcarp.com>
 
 Slides and examples for gophercon
 - go present is used:
