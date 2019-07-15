@@ -1,4 +1,6 @@
 # decimal-slides
+LINK TO PRESENTATION: <http://gophercon.joshcarp.com>
+
 Slides and examples for gophercon
 - go present is used:
 - install https://github.com/golang/talks
