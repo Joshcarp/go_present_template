@@ -1,4 +1,4 @@
-teps:
-        - name: "gcr.io/cloud-builders/gcloud"
-            args: ["app", "deploy"]
-            timeout: "1600s"
+steps:
+  - name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy"]
+timeout: "1600s"
