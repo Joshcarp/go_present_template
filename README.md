@@ -1,5 +1,5 @@
 # decimal-slides
-LINK TO PRESENTATION: <http://joshcarp.xyz>
+Presentation currently under development, no live version available
 
 Slides and examples for gophercon
 - go present is used:
