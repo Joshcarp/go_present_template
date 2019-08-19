@@ -130,16 +130,21 @@ const basePathMessage = `
 By default, gopresent locates the slide template files and associated
 static content by looking for a %q package
 in your Go workspaces (GOPATH).
+
 You may use the -base flag to specify an alternate location.
 `
 
 const localhostWarning = `
 WARNING!  WARNING!  WARNING!
+
 The present server appears to be listening on an address that is not localhost
 and is configured to run code snippets locally. Anyone with access to this address
 and port will have access to this machine as the user running present.
+
 To avoid this message, listen on localhost, run with -play=false, or run with
 -play_socket=false.
+
 If you don't understand this message, hit Control-C to terminate this process.
+
 WARNING!  WARNING!  WARNING!
 `
