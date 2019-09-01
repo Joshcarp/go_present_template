@@ -9,10 +9,10 @@ import (
 	"strconv"
 	"testing"
 
-	apd "github.com/cockroachdb/apd"
-
 	"github.com/anz-bank/decimal"
+	apd "github.com/cockroachdb/apd"
 	ericlagergren "github.com/ericlagergren/decimal"
+	joshcarp "github.com/joshcarp/decimal"
 	shopspring "github.com/shopspring/decimal"
 )
 
@@ -45,9 +45,10 @@ var prettyNames = map[string]string{
 	"float64":           "float64",
 	"decimal.Decimal":   "shopspringDecimal",
 	"decimal.Big":       "ericlagergrenDecimal",
-	"apd.Decimal":       "apdDecimal"}
+	"apd.Decimal":       "apdDecimal",
+	"joshcarp.DecParts": "JoshCarpDecimal"}
 
-var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}, apd.Decimal{}}
+var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}, apd.Decimal{}, joshcarp.DecParts{}}
 
 func BenchmarkDecimal(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
@@ -109,7 +110,9 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	case apd.Decimal:
 		a, _, _ = apd.NewFromString(val1)
 		b, _, _ = apd.NewFromString(val2)
-
+	case joshcarp.DecParts:
+		a, _ = joshcarp.ParseDecParts(val1)
+		b, _ = joshcarp.ParseDecParts(val1)
 	default:
 
 	}
@@ -136,6 +139,8 @@ func runtests(a, b, c interface{}, op string) {
 		execOpEric(a.(ericlagergren.Big), b.(ericlagergren.Big), c.(ericlagergren.Big), op)
 	case apd.Decimal:
 		execOpAdp(a.(apd.Decimal), b.(apd.Decimal), c.(apd.Decimal), op)
+	case joshcarp.DecParts:
+		execOpDec(a.(joshcarp.DecParts), b.(joshcarp.DecParts), c.(joshcarp.DecParts), op)
 	}
 }
 
@@ -225,6 +230,22 @@ func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
 	}
 	return decimal.Zero64
 }
+
+func execOpDec(a, b, c joshcarp.DecParts, op string) joshcarp.DecParts {
+	switch op {
+	case "add":
+		return a.Add(b)
+	case "multiply":
+		return a.Mul(b)
+	case "abs":
+		return a.Abs()
+	case "divide":
+		// return a.Quo(b)
+	default:
+	}
+	return joshcarp.DecZero
+}
+
 func execOpAdp(a, b, c apd.Decimal, op string) apd.Decimal {
 	switch op {
 	case "add":

@@ -1,25 +1,29 @@
-goos: darwin
+goos: linux
 goarch: amd64
 pkg: github.com/Joshcarp/decimal-slides/examples/benchmark
-BenchmarkDecimal/ddAdd.decTest_anz-8         	    5000	    258474 ns/op
-BenchmarkDecimal/ddAdd.decTest_float64-8     	   30000	     55588 ns/op
-BenchmarkDecimal/ddAdd.decTest_shopspringDecimal-8         	    3000	    572498 ns/op
-BenchmarkDecimal/ddAdd.decTest_ericlagergrenDecimal-8      	   30000	     49001 ns/op
-BenchmarkDecimal/ddAdd.decTest_apdDecimal-8                	   30000	     49147 ns/op
-BenchmarkDecimal/ddMultiply.decTest_anz-8                  	    5000	    327129 ns/op
-BenchmarkDecimal/ddMultiply.decTest_float64-8              	   20000	     71320 ns/op
-BenchmarkDecimal/ddMultiply.decTest_shopspringDecimal-8    	    2000	    633672 ns/op
-BenchmarkDecimal/ddMultiply.decTest_ericlagergrenDecimal-8 	   20000	     70897 ns/op
-BenchmarkDecimal/ddMultiply.decTest_apdDecimal-8           	   20000	     68442 ns/op
-BenchmarkDecimal/ddAbs.decTest_anz-8                       	    5000	    332276 ns/op
-BenchmarkDecimal/ddAbs.decTest_float64-8                   	   20000	     83514 ns/op
-BenchmarkDecimal/ddAbs.decTest_shopspringDecimal-8         	    2000	    650717 ns/op
-BenchmarkDecimal/ddAbs.decTest_ericlagergrenDecimal-8      	   20000	     76691 ns/op
-BenchmarkDecimal/ddAbs.decTest_apdDecimal-8                	   20000	     76754 ns/op
-BenchmarkDecimal/ddDivide.decTest_anz-8                    	    2000	    728199 ns/op
-BenchmarkDecimal/ddDivide.decTest_float64-8                	   10000	    106486 ns/op
-BenchmarkDecimal/ddDivide.decTest_shopspringDecimal-8      	    1000	   1224155 ns/op
-BenchmarkDecimal/ddDivide.decTest_ericlagergrenDecimal-8   	   20000	     97974 ns/op
-BenchmarkDecimal/ddDivide.decTest_apdDecimal-8             	   20000	     98690 ns/op
+BenchmarkDecimal/ddAdd.decTest_anz-4         	    5000	    360590 ns/op
+BenchmarkDecimal/ddAdd.decTest_float64-4     	   20000	     93517 ns/op
+BenchmarkDecimal/ddAdd.decTest_shopspringDecimal-4         	    1000	   1036803 ns/op
+BenchmarkDecimal/ddAdd.decTest_ericlagergrenDecimal-4      	   20000	     68130 ns/op
+BenchmarkDecimal/ddAdd.decTest_apdDecimal-4                	   20000	     66899 ns/op
+BenchmarkDecimal/ddAdd.decTest_joshcarpDecimal-4                  10000	    116970 ns/op
+BenchmarkDecimal/ddMultiply.decTest_anz-4                  	    2000	    541811 ns/op
+BenchmarkDecimal/ddMultiply.decTest_float64-4              	   10000	    116099 ns/op
+BenchmarkDecimal/ddMultiply.decTest_shopspringDecimal-4    	    1000	   1251618 ns/op
+BenchmarkDecimal/ddMultiply.decTest_ericlagergrenDecimal-4 	   20000	     94774 ns/op
+BenchmarkDecimal/ddMultiply.decTest_apdDecimal-4           	   20000	     92426 ns/op
+BenchmarkDecimal/ddMultiply.decTest_joshcarpDecimal-4            10000	    169609 ns/op
+BenchmarkDecimal/ddAbs.decTest_anz-4                       	    3000	    525726 ns/op
+BenchmarkDecimal/ddAbs.decTest_float64-4                   	   10000	    120593 ns/op
+BenchmarkDecimal/ddAbs.decTest_shopspringDecimal-4         	    1000	   1443045 ns/op
+BenchmarkDecimal/ddAbs.decTest_ericlagergrenDecimal-4      	   10000	    102799 ns/op
+BenchmarkDecimal/ddAbs.decTest_apdDecimal-4                	   10000	    101476 ns/op
+BenchmarkDecimal/ddAbs.decTest_joshcarpDecimal-4                  10000	    171289 ns/op
+BenchmarkDecimal/ddDivide.decTest_anz-4                    	    1000	   1193902 ns/op
+BenchmarkDecimal/ddDivide.decTest_float64-4                	   10000	    167274 ns/op
+BenchmarkDecimal/ddDivide.decTest_shopspringDecimal-4      	     500	   2410393 ns/op
+BenchmarkDecimal/ddDivide.decTest_ericlagergrenDecimal-4   	   10000	    147564 ns/op
+BenchmarkDecimal/ddDivide.decTest_apdDecimal-4             	   10000	    150440 ns/op
+BenchmarkDecimal/ddDivide.decTest_joshcarpDecimal-4          	   10000	    222826 ns/op
 PASS
-ok  	github.com/Joshcarp/decimal-slides/examples/benchmark	38.876s
+ok  	github.com/Joshcarp/decimal-slides/examples/benchmark	40.462s
