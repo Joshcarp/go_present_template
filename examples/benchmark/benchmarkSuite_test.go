@@ -76,6 +76,7 @@ func BenchmarkDecimal(b *testing.B) {
 
 		// Run the arithmetic test of the seperate types
 		for _, t := range typelist {
+			fmt.println
 			b.Run(dectest+"_"+prettyNames[reflect.TypeOf(t).String()], func(b *testing.B) {
 				// Run tests 500 times
 				for j := 0; j < b.N; j++ {
