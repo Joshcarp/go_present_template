@@ -101,6 +101,10 @@ Base 10 counting system instead of base 2
 : I came on board in december, and it was my first go project
 : The library already had quite a substantial code base
 
+* Bit representation of ieee 754-2008 decimal floating point
+.html html/decimalpointbits.html
+- all in uint64
+
 
 * Testing
 - IBM test suite online with _81,300_ test cases
