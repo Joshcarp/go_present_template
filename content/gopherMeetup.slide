@@ -16,7 +16,8 @@ joshua.carpeggiani@anz.com
 : Enter Josh
 : Started with go in December 2018
 : First time working on Go and open source
-
+* Usage of decimal libraries
+.image img/decimalSurvey.png 600 _
 * Correctness
 
 * Floating point numbers
@@ -69,7 +70,7 @@ Repeated binary numbers:
 Base 10 counting system instead of base 2
 
 
-- IEEE 754R standard released in 2008
+: IEEE 754R standard released in 2008
 
 * Existing Go decimal datatypes
 .link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
@@ -101,6 +102,16 @@ Base 10 counting system instead of base 2
 
 : I came on board in december, and it was my first go project
 : The library already had quite a substantial code base
+
+* A decimal type optimized for performance
+.code ../examples/decimal.go /^type Decimal64 struct/,/^}/
+- Fast by intention, altough can only represent a max value of 999999999999999*10^384
+- Unlike big decimal which can represent arbitrarily large numbers
+- Hopefully decimal128 coming soon
+: What would a go “style” decimal look like?
+: Elegant and self contained, only making use of essential math/bits packages
+: Simple uint64 type (decimal 128 type coming too)
+: This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
 
 * Bit representation of ieee 754-2008 decimal floating point
 .html html/decimalpointbits.html
@@ -148,63 +159,67 @@ Base 10 counting system instead of base 2
 
 * Why?
 - Slower than expected
-- Theory: Maybe packing/unpacking has slowed it down
+- Some arbitrary precision libraries are faster than even builtin float64!
+- Theory: Maybe encoding/decoding has slowed it down
 * Encoding/Decoding a decimal floating point number
 .code ../examples/decParts.go  /START OMIT/,/END OMIT/
 
 - starting to look a little like Big decimals ...
 * Why?
 .code ../examples/ansFunction.go /START OMIT/,/END OMIT/
-- first thing we need to do is unpack, last thing we do is pack
+- first thing we need to do is encode, last thing we do is decode
+* Why?
+.html html/decimalpointbits.html
+
+Expands 
+
+.html html/decExpanded.html
+
 
 * Benchmarks v2
 - removing the encoding and decoding; only use struct
-- using only pointers, no passing structs
 
 * Benchmark Abs
-- lower is better
 
-.image img/Abs_optimised.png 500 _
+.image img/Abs_optimised_1.png 500 _
 
 * Benchmark Multiply
-- lower is better
 
-.image img/Multiply_optimised.png 500 _
+.image img/Multiply_optimised_1.png 500 _
 
 * Benchmark Divide
-- lower is better
 
-.image img/Divide_optimised.png 500 _
+.image img/Divide_optimised_1.png 500 _
 
 * Benchmark Add
-- lower is better
 
-.image img/Add_optimised.png 500 _
+.image img/Add_optimised_1.png 500 _
 
 * ericlagergren Big decimal
 .code ../examples/ericDecimal.go /START OMIT/,/END OMIT/
 - combines the speed of fixed precision and the accuracy of arbitrary precision
+- doesn't actually pass around any structs
+ 
+  func (c Context) Add(z, x, y *Big) *Big { 
 
+* Even more optimisation
+- use pointers to everything; never actually pass structs
 
+.image img/Add_optimised.png 500 _
 
-* A decimal type optimized for performance
-.code ../examples/decimal.go /^type Decimal64 struct/,/^}/
-- Fast by intention, altough can only represent a max value of 999999999999999*10^384
-- Unlike big decimal which can represent arbitrarily large numbers
-- Hopefully decimal128 coming soon
-: What would a go “style” decimal look like?
-: Elegant and self contained, only making use of essential math/bits packages
-: Simple uint64 type (decimal 128 type coming too)
-: This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
+* Decimal comparisons
 
-
+.html html/comparison.html
 
 * In the future
-: How far the anz-bank/decimal has come, where it still needs to go
-- go core?
-- Would boost adoption in financial sector
+- Need to optimise more
+- More benchmarking + Cross platorm
+- A good, well supported decimal would boost adoption in financial sector
+- join the fun: github.com/anz-bank/decimal
 : We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
 : Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
+*   (overloading)
+.code ../examples/overloading.go /START OMIT/,/END OMIT/
 
 * Links
 - Graphics from
