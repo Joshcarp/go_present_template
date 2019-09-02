@@ -9,6 +9,8 @@ github.com/ericlagergren/decimal v0.0.0-20190729173012-f05d33913e5a h1:xHtz7D2Mu
 github.com/ericlagergren/decimal v0.0.0-20190729173012-f05d33913e5a/go.mod h1:mdYyfAkzn9kyJ/kMk/7WE9ufl9lflh+2NvecQ5mAghs=
 github.com/joshcarp/decimal v0.0.0-20190901130428-eb06b23fc175 h1:2974yBfukXyptD+0NaPWou4pjXyNGu0WuC4H4qcEzlw=
 github.com/joshcarp/decimal v0.0.0-20190901130428-eb06b23fc175/go.mod h1:IqQnTv8slPwS/k2smjctPgUGCBoOQfmEVaRE+nuB+J8=
+github.com/joshcarp/decimal v0.0.0-20190902003413-ddf790f489f0 h1:QGeaJmIsabUQm9tYxRebxH+n19zdSv+PB1VPHOZC6V0=
+github.com/joshcarp/decimal v0.0.0-20190902003413-ddf790f489f0/go.mod h1:IqQnTv8slPwS/k2smjctPgUGCBoOQfmEVaRE+nuB+J8=
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
