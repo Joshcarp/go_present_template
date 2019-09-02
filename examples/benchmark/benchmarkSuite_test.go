@@ -76,7 +76,7 @@ func BenchmarkDecimal(b *testing.B) {
 
 		// Run the arithmetic test of the seperate types
 		for _, t := range typelist {
-			fmt.println
+
 			b.Run(dectest+"_"+prettyNames[reflect.TypeOf(t).String()], func(b *testing.B) {
 				// Run tests 500 times
 				for j := 0; j < b.N; j++ {
@@ -213,7 +213,8 @@ func execOpShop(a, b, c shopspring.Decimal, op string) shopspring.Decimal {
 	case "abs":
 		return a.Abs()
 	case "divide":
-		return a.Div(b)
+		return shopspring.Zero
+		// return a.Div(b)
 	}
 	return shopspring.Zero
 }
@@ -235,12 +236,13 @@ func execOp(a, b, c decimal.Decimal64, op string) decimal.Decimal64 {
 func execOpDec(a, b, c joshcarp.DecParts, op string) joshcarp.DecParts {
 	switch op {
 	case "add":
-		return a.Add(b)
+		return *a.Add(&b)
 	case "multiply":
-		return a.Mul(b)
+		return *a.Mul(&b)
 	case "abs":
-		return a.Abs()
+		return *a.Abs()
 	case "divide":
+		return joshcarp.DecZero
 		// return a.Quo(b)
 	default:
 	}
