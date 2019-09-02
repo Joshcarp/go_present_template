@@ -1,0 +1,185 @@
+Go for Decimals
+Tags: decimal, floating point, fixed precision, ieee 754R
+
+Joshua Carpeggiani
+Software Engineer, ANZ
+joshua.carpeggiani@anz.com
+
+* Go and ANZ
+: Go taking off as programming language of choice at ANZ
+: Banks need decimal data types see later
+: Existing decimal datatypes slow
+: With Arbitrary precision comes great inefficiency
+
+: Another Decimal Library
+: Open source project started by senior guy at anz without much time
+: Enter Josh
+: Started with go in December 2018
+: First time working on Go and open source
+
+* Correctness
+
+* Floating point numbers
+.html html/floatingpointbits.html
+.play ../examples/floatExample.go /^func main/,/^}/
+- floats aren't sufficient
+
+* Scientific notation
+
+.html html/basic.html
+
+* Binary floating point numbers
+.html html/basicBinary.html
+: This number is equal to 9.3125
+
+* Binary floating point numbers
+
+
+
+: 3 isn’t a factor of 10, so ⅓ can’t be represented exactly
+: 10 isn’t a power of 2 so 1/10 can’t be represented exactly
+
+
+
+
+* The problem with floating point numbers
+Repeated decimal numbers:
+.html html/110.html
+Repeated binary numbers:
+.html html/decFrac.html
+
+* Why?
+.html html/Sheet2.html
+* Why?
+.image img/BinDec.png _ 500
+* When does this matter?
+
+- Compounding errors
+- Need for exact numbers
+
+.play ../examples/TimeRounding.go /^func main/,/^}/
+
+
+* Solution - Decimal datatype
+.html html/110decimal.html
+
+.play ../examples/decimalExample.go /^func main/,/^}/
+Base 10 counting system instead of base 2
+
+
+- IEEE 754R standard released in 2008
+
+* Existing Go decimal datatypes
+.link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
+.link https://github.com/cockroachdb/apd github.com/cockroachdb/apd
+.link https://github.com/shopspring/decimal github.com/shopspring/decimal
+
+* 'Arbitrary precision' decimals
+
+
+* Another Decimal library
+.link http://www.github.com/anz-bank/decimal
+
+- Project Goal: Implement a 64 & 128 bit decimal floating point library
+- Conform as closely to standard as practical
+
+: I came on board in december, and it was my first go project
+: The library already had quite a substantial code base
+
+
+* Testing
+- IBM test suite online with _81,300_ test cases
+.link http://speleotrove.com/decimal/
+
+
+- Think of edge cases
+
+
+
+
+
+
+
+
+
+* Speed
+* Benchmarking
+
+- float64
+- anz-bank/decimal
+- shopspring/decimal
+- ericlagergren/decimal
+- Benchmarks are still being debugged and I am not currently confident in the results
+- Benchmarks are located at
+.link https://github.com/joshcarp/decimal-slides
+
+* Benchmark Abs
+- lower is better
+
+.image img/Abs.png 500 _
+
+* Benchmark Multiply
+- lower is better
+
+.image img/Multiply.png 500 _
+
+* Benchmark Divide
+- lower is better
+
+.image img/Divide.png 500 _
+
+* Benchmark Add
+- lower is better
+
+.image img/Add.png 500 _
+
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html html/floatingPointDecoding.html
+- Number of exponent is the same as the number of shifting places
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html html/floatingPointDecoding2.html
+.play ../examples/bitshifts.go /^func main/,/^}/
+
+* Big Decimals
+- Based on big.int
+- Allows for arbitrary precision
+
+.code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
+
+.code ../examples/bigInt.go /(?s)type Int struct {(.*)/
+
+: “Big decimals” and how they work (really just listing these points)
+: math/big → slice of bytes and does calculations from there
+: Other implementations are based on big ints, which are
+: Decimal(type big int) → nat → []word (type uint) (2 pointers)
+: This is fundamentally slower, and takes up more space, even for an empty decimal
+: Arithmetic needs to access slices, then calculate, then write to slice
+- Walking pointers is inherently going to be slower
+
+* A decimal type optimized for performance
+.code ../examples/decimal.go /^type Decimal64 struct/,/^}/
+- Fast by intention, altough can only represent a max value of 999999999999999*10^384
+- Unlike big decimal which can represent arbitrarily large numbers
+- Hopefully decimal128 coming soon
+: What would a go “style” decimal look like?
+: Elegant and self contained, only making use of essential math/bits packages
+: Simple uint64 type (decimal 128 type coming too)
+: This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
+
+
+
+* In the future
+: How far the anz-bank/decimal has come, where it still needs to go
+- go core?
+- Would boost adoption in financial sector
+: We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
+: Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
+
+* Links
+- Graphics from
+.link https://ciechanow.ski/exposing-floating-point/
+
+- Github
+.link https://github.com/anz-bank/decimal
