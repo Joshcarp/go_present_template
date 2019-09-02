@@ -103,32 +103,24 @@ Base 10 counting system instead of base 2
 
 * Bit representation of ieee 754-2008 decimal floating point
 .html html/decimalpointbits.html
-- all in uint64
+## pros:
+- small footprint within single uint64
+- nice and clean
+- no pointers 
+## cons:
+ - No arbitrary precision
 
-
-* Testing
+* Benchmarking
+# Testing
 - IBM test suite online with _81,300_ test cases
 .link http://speleotrove.com/decimal/
 
-
-- Think of edge cases
-
-
-
-
-
-
-
-
-
-* Speed
 * Benchmarking
 
 - float64
 - anz-bank/decimal
 - shopspring/decimal
 - ericlagergren/decimal
-- Benchmarks are still being debugged and I am not currently confident in the results
 - Benchmarks are located at
 .link https://github.com/joshcarp/decimal-slides
 
@@ -151,6 +143,21 @@ Base 10 counting system instead of base 2
 - lower is better
 
 .image img/Add.png 500 _
+
+
+* Why?
+- Slower than expected
+- Theory: Maybe packing/unpacking has slowed it down
+* Encoding/Decoding a decimal floating point number
+.code ../examples/decParts.go  /START OMIT/,/END OMIT/
+
+- starting to look a little like Big decimals ...
+* Why?
+.code ../examples/anzFunction.go /START OMIT/,/END OMIT/
+- first thing we need to do is unpack, last thing we do is pack
+
+* Benchmarks v2
+
 
 * Floating point arithmetic
 - “Decoding” isn’t really needed

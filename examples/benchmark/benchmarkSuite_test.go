@@ -8,10 +8,11 @@ import (
 	"strconv"
 	"testing"
 
+	joshcarp "decimalWithoutEncoding/"
+
 	"github.com/anz-bank/decimal"
 	apd "github.com/cockroachdb/apd"
 	ericlagergren "github.com/ericlagergren/decimal"
-	joshcarp "github.com/joshcarp/decimal"
 	shopspring "github.com/shopspring/decimal"
 )
 
