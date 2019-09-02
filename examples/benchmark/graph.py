@@ -31,13 +31,24 @@ def generate_graph(responsetime_filename):
     operations = data.TestName.unique()
     for operation in operations:
         element = data.loc[data["TestName"] == operation]
-        print(element)
+        duplicates = element.duplicated(subset = 'LibraryName', keep = 'first')
+        dupes = element[duplicates]
+        # [dupes.append(pandas.Series(), ignore_index=True) for i in range(len(element.index)-len(dupes.index))] 
+        element = element[~duplicates]
+        print(dupes)
+        print(len(element[~duplicates].index))
         plt.figure(figsize=(10,6))
         x = np.arange(len(element.index))
+        dupeInd = np.arange(len(dupes.index))
+        bar_lst2 = plt.bar(dupeInd, dupes.time.tolist())
         bar_lst = plt.bar(x, element.time.tolist())
+        
         colors = cycle([(232/255, 62/255, 93/255, 0.3),(65/255, 186/255, 99/255, 0.3),(87/255, 126/255, 199/255, 0.3),(232/255, 165/255, 0, 0.3)])
         for i in range(len(bar_lst)):
             bar_lst[i].set_color(next(colors))
+        for i in range(len(bar_lst2)):
+            next(colors)
+            bar_lst2[i].set_color(next(colors))
         plt.xticks(x, element.LibraryName)
         plt.xticks(rotation=10)
         plt.title(operation + " Benchmark")
