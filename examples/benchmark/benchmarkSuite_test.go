@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"math"
 	"os"
-	"reflect"
 	"regexp"
 	"strconv"
 	"testing"
@@ -49,10 +48,11 @@ var prettyNames = map[string]string{
 	"joshcarp.DecParts": "JoshCarpDecimal"}
 
 var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}, apd.Decimal{}, joshcarp.DecParts{}}
+var typeNamelist = []string{"decimal.Decimal64", "float64", "decimal.Decimal", "decimal.Big", "apd.Decimal", "joshcarp.DecParts"}
 
 func BenchmarkDecimal(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
-	typeMap := make(map[reflect.Type][]testcase)
+	typeMap := make(map[string][]testcase)
 
 	// For every arithmetic test
 	for _, dectest := range testPaths {
@@ -63,24 +63,24 @@ func BenchmarkDecimal(b *testing.B) {
 			testVal := getInput(scanner.Text())
 			if testVal.testName != "" {
 				// for every type
-				for _, t := range typelist {
+				for i, t := range typelist {
 
 					// Convert string to type t
 					a, b := ParseDecimal(testVal.val1, testVal.val2, t)
 
 					// Add to map
-					typeMap[reflect.TypeOf(t)] = append(typeMap[reflect.TypeOf(t)], testcase{testVal.testFunc, a, b})
+					typeMap[typeNamelist[i]] = append(typeMap[typeNamelist[i]], testcase{testVal.testFunc, a, b})
 				}
 			}
 		}
 
 		// Run the arithmetic test of the seperate types
-		for _, t := range typelist {
+		for i, t := range typelist {
 
-			b.Run(dectest+"_"+prettyNames[reflect.TypeOf(t).String()], func(b *testing.B) {
-				// Run tests 500 times
+			b.Run(dectest+"_"+prettyNames[typeNamelist[i]], func(b *testing.B) {
+				// Run tests
 				for j := 0; j < b.N; j++ {
-					for _, test := range typeMap[reflect.TypeOf(t)] {
+					for _, test := range typeMap[typeNamelist[i]] {
 						runtests(test.v1, test.v2, t, test.op)
 					}
 				}
