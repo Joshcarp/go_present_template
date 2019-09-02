@@ -14,7 +14,7 @@ text-align: center;
 padding: 1em 1em 1.5em 1em;
 }
 
-.float_sign, .float_exp, .float_mant, .float_int, .blank_mant, .blank_sign, .blank_exp {
+.float_sign, .float_exp, .float_mant, .float_int, .blank_mant, .blank_sign, .blank_exp, .dec_com {
     position: relative;
     margin: 0 0.1em;
     padding: 0.1em 0.25em;
@@ -26,6 +26,10 @@ padding: 1em 1em 1.5em 1em;
     background: rgba(232, 62, 93, 0.3);
 }
 
+
+.dec_com {
+    background: rgba(232, 165, 0, 0.3);
+}
 
 .float_exp {
     background: rgba(65, 186, 99, 0.3);
@@ -55,7 +59,7 @@ padding: 1em 1em 1.5em 1em;
     background: rgba(100, 100, 100, 0.3);
 }
 
-.float_sign:after, .float_exp:after, .float_mant:after  {
+.float_sign:after, .float_exp:after, .float_mant:after, .dec_com:after  {
     font-weight: normal;
     font-family: "IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
     position: absolute;
@@ -74,6 +78,14 @@ padding: 1em 1em 1.5em 1em;
 
 .float_exp:after  {
     content: 'exponent';
+}
+
+.dec_com:after  {
+    content: 'exponent significand combination';
+}
+
+.dec_com:after  {
+    color: rgba(232, 165, 0, 0.3);
 }
 .float_mant:after  {
     content: 'significand';

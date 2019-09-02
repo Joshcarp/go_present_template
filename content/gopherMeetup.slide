@@ -75,13 +75,28 @@ Base 10 counting system instead of base 2
 .link https://github.com/shopspring/decimal github.com/shopspring/decimal
 
 * 'Arbitrary precision' decimals
+# 'Big Decimals'
+- Based on big.int
+- Allows for arbitrary precision
+
+.code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
+
+.code ../examples/bigInt.go /(?s)type Int struct {(.*)/
+
+: “Big decimals” and how they work (really just listing these points)
+: math/big → slice of bytes and does calculations from there
+: Other implementations are based on big ints, which are
+: Decimal(type big int) → nat → []word (type uint) (2 pointers)
+: This is fundamentally slower, and takes up more space, even for an empty decimal
+: Arithmetic needs to access slices, then calculate, then write to slice
+- Walking pointers is inherently going to be slower
 
 
 * Another Decimal library
 .link http://www.github.com/anz-bank/decimal
 
 - Project Goal: Implement a 64 & 128 bit decimal floating point library
-- Conform as closely to standard as practical
+- Conform as closely to ieee 754-2008 standard as practical
 
 : I came on board in december, and it was my first go project
 : The library already had quite a substantial code base
@@ -142,21 +157,6 @@ Base 10 counting system instead of base 2
 .html html/floatingPointDecoding2.html
 .play ../examples/bitshifts.go /^func main/,/^}/
 
-* Big Decimals
-- Based on big.int
-- Allows for arbitrary precision
-
-.code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
-
-.code ../examples/bigInt.go /(?s)type Int struct {(.*)/
-
-: “Big decimals” and how they work (really just listing these points)
-: math/big → slice of bytes and does calculations from there
-: Other implementations are based on big ints, which are
-: Decimal(type big int) → nat → []word (type uint) (2 pointers)
-: This is fundamentally slower, and takes up more space, even for an empty decimal
-: Arithmetic needs to access slices, then calculate, then write to slice
-- Walking pointers is inherently going to be slower
 
 * A decimal type optimized for performance
 .code ../examples/decimal.go /^type Decimal64 struct/,/^}/
