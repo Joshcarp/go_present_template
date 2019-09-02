@@ -14,7 +14,7 @@ def convertToCsv(filename):
     next(original)
     c.writerow(["TestName", "LibraryName", "iterations", "time"])
     line = original.read()
-    regex = r"(?:BenchmarkDecimal\/dd)(?P<TestName>\w*)(?:.decTest_)(?P<LibraryName>\w*)(?:-\d\s*)(?P<iterations>\d*)(?:\s*)(?P<time>\d*)"
+    regex = r"(?:BenchmarkDecimal\/dd)(?P<TestName>\w*)(?:.decTest_)(?P<LibraryName>\w*)(?:(#\d*)*-\d\s*)(?P<iterations>\d*)(?:\s*)(?P<time>\d*)"
     matches = re.finditer(regex, line)
     for mat in matches:
         c.writerow([mat.group("TestName"), mat.group("LibraryName"), mat.group("iterations"), mat.group("time")])
@@ -33,9 +33,10 @@ def generate_graph(responsetime_filename):
         element = data.loc[data["TestName"] == operation]
         duplicates = element.duplicated(subset = 'LibraryName', keep = 'first')
         dupes = element[duplicates]
+        print(element)
+
         # [dupes.append(pandas.Series(), ignore_index=True) for i in range(len(element.index)-len(dupes.index))] 
         element = element[~duplicates]
-        print(dupes)
         print(len(element[~duplicates].index))
         plt.figure(figsize=(10,6))
         x = np.arange(len(element.index))
@@ -51,8 +52,9 @@ def generate_graph(responsetime_filename):
             bar_lst2[i].set_color(next(colors))
         plt.xticks(x, element.LibraryName)
         plt.xticks(rotation=10)
+        plt.ylabel('ns/operation')
         plt.title(operation + " Benchmark")
-        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}_optimised.png", dpi=300, figsize=(50,25))
+        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}_optimised_1.png", dpi=300, figsize=(50,25))
 
 if __name__ == "__main__":
     # os.system("go test -bench=. > results.txt")

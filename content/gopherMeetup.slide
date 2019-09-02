@@ -32,14 +32,16 @@ joshua.carpeggiani@anz.com
 .html html/basicBinary.html
 : This number is equal to 9.3125
 
-* Binary floating point numbers
+* Floating point arithmetic
+- “Decoding” isn’t really needed
 
+.html html/floatingPointDecoding.html
+- Number of exponent is the same as the number of shifting places
 
-
-: 3 isn’t a factor of 10, so ⅓ can’t be represented exactly
-: 10 isn’t a power of 2 so 1/10 can’t be represented exactly
-
-
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html html/floatingPointDecoding2.html
+.play ../examples/bitshifts.go /^func main/,/^}/
 
 
 * The problem with floating point numbers
@@ -90,7 +92,6 @@ Base 10 counting system instead of base 2
 : This is fundamentally slower, and takes up more space, even for an empty decimal
 : Arithmetic needs to access slices, then calculate, then write to slice
 - Walking pointers is inherently going to be slower
-
 
 * Another Decimal library
 .link http://www.github.com/anz-bank/decimal
@@ -153,20 +154,37 @@ Base 10 counting system instead of base 2
 
 - starting to look a little like Big decimals ...
 * Why?
-.code ../examples/anzFunction.go /START OMIT/,/END OMIT/
+.code ../examples/ansFunction.go /START OMIT/,/END OMIT/
 - first thing we need to do is unpack, last thing we do is pack
 
 * Benchmarks v2
+- removing the encoding and decoding; only use struct
+- using only pointers, no passing structs
 
+* Benchmark Abs
+- lower is better
 
-* Floating point arithmetic
-- “Decoding” isn’t really needed
-.html html/floatingPointDecoding.html
-- Number of exponent is the same as the number of shifting places
-* Floating point arithmetic
-- “Decoding” isn’t really needed
-.html html/floatingPointDecoding2.html
-.play ../examples/bitshifts.go /^func main/,/^}/
+.image img/Abs_optimised.png 500 _
+
+* Benchmark Multiply
+- lower is better
+
+.image img/Multiply_optimised.png 500 _
+
+* Benchmark Divide
+- lower is better
+
+.image img/Divide_optimised.png 500 _
+
+* Benchmark Add
+- lower is better
+
+.image img/Add_optimised.png 500 _
+
+* ericlagergren Big decimal
+.code ../examples/ericDecimal.go /START OMIT/,/END OMIT/
+- combines the speed of fixed precision and the accuracy of arbitrary precision
+
 
 
 * A decimal type optimized for performance

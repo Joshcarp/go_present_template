@@ -9,4 +9,4 @@ func (d Decimal64) Add(e Decimal64) Decimal64 {
 	return newFromParts(ans)
 }
 
-// End OMIT
+// END OMIT
