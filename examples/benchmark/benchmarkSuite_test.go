@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"testing"
 
-	joshcarp "decimalWithoutEncoding/"
+	joshcarp "github.com/joshcarp/decimal"
 
 	"github.com/anz-bank/decimal"
 	apd "github.com/cockroachdb/apd"
@@ -46,7 +46,7 @@ var prettyNames = map[string]string{
 	"decimal.Decimal":   "shopspringDecimal",
 	"decimal.Big":       "ericlagergrenDecimal",
 	"apd.Decimal":       "apdDecimal",
-	"joshcarp.DecParts": "JoshCarpDecimal"}
+	"joshcarp.DecParts": "anz"}
 
 var typelist = []interface{}{decimal.Decimal64{}, 0.0, shopspring.Decimal{}, ericlagergren.Big{}, apd.Decimal{}, joshcarp.DecParts{}}
 var typeNamelist = []string{"decimal.Decimal64", "float64", "decimal.Decimal", "decimal.Big", "apd.Decimal", "joshcarp.DecParts"}
