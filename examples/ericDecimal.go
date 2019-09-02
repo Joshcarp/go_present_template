@@ -16,3 +16,10 @@ type Big struct {
 	// END OMIT
 
 }
+
+// // START OMIT2
+
+// func (c Context) Add(z, x, y *Big) *Big {
+
+// 	// END OMIT2
+// }
