@@ -69,16 +69,14 @@ Repeated binary numbers:
 .play ../examples/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
 
-
-: IEEE 754R standard released in 2008
-
 * Existing Go decimal datatypes
 .link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
 .link https://github.com/cockroachdb/apd github.com/cockroachdb/apd
 .link https://github.com/shopspring/decimal github.com/shopspring/decimal
+shopspring seems to be unsupported; last commit was June 2018
 
 * 'Arbitrary precision' decimals
-# 'Big Decimals'
+'Big Decimals'
 - Based on big.int
 - Allows for arbitrary precision
 
@@ -107,7 +105,7 @@ Base 10 counting system instead of base 2
 .code ../examples/decimal.go /^type Decimal64 struct/,/^}/
 - Fast by intention, altough can only represent a max value of 999999999999999*10^384
 - Unlike big decimal which can represent arbitrarily large numbers
-- Hopefully decimal128 coming soon
+
 : What would a go “style” decimal look like?
 : Elegant and self contained, only making use of essential math/bits packages
 : Simple uint64 type (decimal 128 type coming too)
@@ -115,17 +113,18 @@ Base 10 counting system instead of base 2
 
 * Bit representation of ieee 754-2008 decimal floating point
 .html html/decimalpointbits.html
-## pros:
+pros:
 - small footprint within single uint64
 - nice and clean
 - no pointers 
-## cons:
- - No arbitrary precision
+cons:
+- No arbitrary precision
 
 * Benchmarking
-# Testing
+Testing
 - IBM test suite online with _81,300_ test cases
 .link http://speleotrove.com/decimal/
+Note: these benchmarks are testing edgecases
 
 * Benchmarking
 
@@ -133,7 +132,7 @@ Base 10 counting system instead of base 2
 - anz-bank/decimal
 - shopspring/decimal
 - ericlagergren/decimal
-- Benchmarks are located at
+Benchmarks are located at
 .link https://github.com/joshcarp/decimal-slides
 
 * Benchmark Abs
@@ -205,7 +204,7 @@ Expands
 * Even more optimisation
 - use pointers to everything; never actually pass structs
 
-.image img/Add_optimised.png 500 _
+.image img/Add_optimised_2.png 500 _
 
 * Decimal comparisons
 
@@ -222,8 +221,12 @@ Expands
 .code ../examples/overloading.go /START OMIT/,/END OMIT/
 
 * Links
-- Graphics from
+- Graphics adapted fromfrom
 .link https://ciechanow.ski/exposing-floating-point/
 
+- Benchmarking
+.link https://github.com/joshcarp/decimal-slides
 - Github
 .link https://github.com/anz-bank/decimal
+
+- Survey from reddit user kardianos
