@@ -8,10 +8,10 @@ import (
 	"strconv"
 	"testing"
 
+	anz_optimised "github.com/Joshcarp/decimalOptimised"
 	"github.com/anz-bank/decimal"
 	apd "github.com/cockroachdb/apd"
 	ericlagergren "github.com/ericlagergren/decimal"
-	anz_optimised "github.com/joshcarp/decimal"
 	shopspring "github.com/shopspring/decimal"
 )
 
@@ -242,14 +242,14 @@ func execOp(a, b, c decimal.Decimal64, op string) {
 func execOpDec(a, b, c anz_optimised.DecParts, op string) {
 	switch op {
 	case "add":
-		a.Add(b)
+		a.Add(&b)
 	case "multiply":
-		a.Mul(b)
+		a.Mul(&b)
 	case "abs":
 		a.Abs()
 	case "divide":
 		// return anz_optimised.DecZero
-		a.Quo(b)
+		a.Quo(&b)
 	default:
 	}
 	// return anz_optimised.DecZero
