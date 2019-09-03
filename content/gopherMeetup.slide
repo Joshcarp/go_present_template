@@ -187,7 +187,6 @@ Expands
 * Even more optimisation
 - use pointers to everything; never actually pass structs
 
-.image img/Add_optimised_2.png 500 _
 
 * Decimal comparisons
 
