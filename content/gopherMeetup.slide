@@ -64,6 +64,9 @@ Repeated binary numbers:
 .code ../examples/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
 
+* Decimal decoding
+.html html/decimalDecoding.html
+
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
 
@@ -134,25 +137,15 @@ Note: these benchmarks are testing edgecases
 Benchmarks are located at
 .link https://github.com/joshcarp/decimal-slides
 
-* Benchmark Abs
+* Arithmetic benchmarks - Multiply
+
+.image img/Multiply_6.png 500 _
+
+* Arithmetic benchmarks - Abs
+
+.image img/Abs_6.png 500 _
 
 
-.image img/Abs.png 500 _
-
-* Benchmark Multiply
-
-
-.image img/Multiply.png 500 _
-
-* Benchmark Divide
-
-
-.image img/Divide.png 500 _
-
-* Benchmark Add
-
-
-.image img/Add.png 500 _
 
 
 * Why?
@@ -176,21 +169,13 @@ Expands
 * Benchmarks v2
 - removing the encoding and decoding; only use struct
 
-* Benchmark Abs
+* Arithmetic benchmarks - Multiply
 
-.image img/Abs_optimised_1.png 500 _
+.image img/Multiply_5.png 500 _
 
-* Benchmark Multiply
+* Arithmetic benchmarks - Abs
 
-.image img/Multiply_optimised_1.png 500 _
-
-* Benchmark Divide
-
-.image img/Divide_optimised_1.png 500 _
-
-* Benchmark Add
-
-.image img/Add_optimised_1.png 500 _
+.image img/Abs_5.png 500 _
 
 * ericlagergren Big decimal
 .code ../examples/ericDecimal.go /START OMIT/,/END OMIT/

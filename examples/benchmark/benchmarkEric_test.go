@@ -32,6 +32,7 @@ var testPaths = []string{
 	"ddDivide.decTest",
 }
 var testPathdir = "dectest/"
+var numloop = 20000
 
 type testcase struct {
 	op     string
@@ -294,20 +295,20 @@ func execOpFloat(a, b *float64, op string) {
 func execOpDec(a, b *anz_optimised.DecParts, op string) {
 	switch op {
 	case "add":
-		for i := 0; i < numloops; i++ {
+		for i := 0; i < numloop; i++ {
 			a.Add(b)
 		}
 	case "multiply":
-		for i := 0; i < numloops; i++ {
+		for i := 0; i < numloop; i++ {
 			a.Mul(b)
 		}
 	case "abs":
-		for i := 0; i < numloops; i++ {
+		for i := 0; i < numloop; i++ {
 			a.Abs()
 		}
 	case "divide":
 		// return anz_optimised.DecZero
-		for i := 0; i < numloops; i++ {
+		for i := 0; i < numloop; i++ {
 			a.Quo(b)
 		}
 	default:

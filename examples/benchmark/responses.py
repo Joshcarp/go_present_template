@@ -10,8 +10,7 @@ a = pandas.DataFrame([{"name": "shopspring\nDecimal", "num": 29},
 {"name":"crdb\napd.Decimal", "num": 7},
 {"name":"big.Rat" , "num": 6},
 {"name":"other"  , "num": 5},
-{"name":"big.Float", "num": 4}, 
-{"name":"anz", "num": 1}])
+{"name":"big.Float", "num": 4}])
 x = numpy.arange(len(a.index))
 # a = a.unstack()
 a
