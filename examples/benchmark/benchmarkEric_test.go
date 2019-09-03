@@ -32,7 +32,6 @@ var testPaths = []string{
 	"ddDivide.decTest",
 }
 var testPathdir = "dectest/"
-var numloop = 20000
 
 type testcase struct {
 	op     string
@@ -216,10 +215,6 @@ func execOpEric(a, b *ericlagergren.Big, op string) {
 	default:
 
 	}
-
-	// return nil
-
-	// return ericlagergren.Big{}
 }
 func execOp(a, b *decimal.Decimal64, op string) {
 	switch op {
@@ -278,7 +273,7 @@ func execOpFloat(a, b *float64, op string) {
 			e = *a * *b
 		}
 	case "abs":
-		// e = math.Abs((float64)a)
+// 		e = math.Abs((float64)a)
 	case "divide":
 		for i := 0; i < numloops; i++ {
 			e = *a / *b
@@ -295,23 +290,21 @@ func execOpFloat(a, b *float64, op string) {
 func execOpDec(a, b *anz_optimised.DecParts, op string) {
 	switch op {
 	case "add":
-		for i := 0; i < numloop; i++ {
+		for i := 0; i < numloops; i++ {
 			a.Add(b)
 		}
 	case "multiply":
-		for i := 0; i < numloop; i++ {
+		for i := 0; i < numloops; i++ {
 			a.Mul(b)
 		}
 	case "abs":
-		for i := 0; i < numloop; i++ {
+		for i := 0; i < numloops; i++ {
 			a.Abs()
 		}
 	case "divide":
-		// return anz_optimised.DecZero
-		for i := 0; i < numloop; i++ {
+		for i := 0; i < numloops; i++ {
 			a.Quo(b)
 		}
 	default:
 	}
-	// return anz_optimised.DecZero
 }
