@@ -16,7 +16,7 @@ joshua.carpeggiani@anz.com
 
 * Floating point numbers
 .html html/floatingpointbits.html
-.code ../examples/floatExample.go /^func main/,/^}/
+.play ../examples/floatExample.go /^func main/,/^}/
 - floats aren't sufficient
 
 * Scientific notation
@@ -60,7 +60,7 @@ Repeated binary numbers:
 * Solution - Decimal datatype
 .html html/110decimal.html
 
-.play ../examples/decimalExample.go /^func main/,/^}/
+.code ../examples/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
 
 * Existing Go decimal datatypes
