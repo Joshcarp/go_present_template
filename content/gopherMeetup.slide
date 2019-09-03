@@ -147,12 +147,6 @@ Benchmarks are located at
 
 .image img/Multiply_6.png 500 _
 
-* Arithmetic benchmarks - Abs
-
-.image img/Abs_6.png 500 _
-
-
-
 
 * Why?
 - Slower than expected
@@ -179,9 +173,6 @@ Expands
 
 .image img/Multiply_5.png 500 _
 
-* Arithmetic benchmarks - Abs
-
-.image img/Abs_5.png 500 _
 
 * ericlagergren Big decimal
 .code ../examples/ericDecimal.go /START OMIT/,/END OMIT/
