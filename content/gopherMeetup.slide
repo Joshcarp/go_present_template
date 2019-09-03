@@ -69,10 +69,6 @@ Base 10 counting system instead of base 2
 * History of floats
 .image img/FullTimeline.png 400 _
 
-
-* Decimal decoding
-.html html/decimalDecoding.html
-
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
 
@@ -165,6 +161,8 @@ Expands
 
 .html html/decExpanded.html
 
+* Decimal decoding
+.html html/decimalDecoding.html
 
 * Benchmarks v2
 - removing the encoding and decoding; only use struct
@@ -180,9 +178,6 @@ Expands
 - doesn't actually pass around any structs
  
   func (c Context) Add(z, x, y *Big) *Big { 
-
-* Even more optimisation
-- use pointers to everything; never actually pass structs
 
 
 * Decimal comparisons
