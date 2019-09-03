@@ -58,10 +58,14 @@ Repeated binary numbers:
 
 
 * Solution - Decimal datatype
+
 .html html/110decimal.html
 
 .play ../examples/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
+
+* Usage of decimal libraries
+.image img/decimalSurvey.png 600 _
 
 * Existing Go decimal datatypes
 .link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
@@ -106,6 +110,7 @@ shopspring seems to be unsupported; last commit was June 2018
 : This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
 
 * Bit representation of ieee 754-2008 decimal floating point
+.html html/floatingpointbits.html
 .html html/decimalpointbits.html
 pros:
 - small footprint within single uint64

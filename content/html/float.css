@@ -81,7 +81,7 @@ padding: 1em 1em 1.5em 1em;
 }
 
 .dec_com:after  {
-    content: 'exponent significand combination';
+    content: 'combination';
 }
 
 .dec_com:after  {
