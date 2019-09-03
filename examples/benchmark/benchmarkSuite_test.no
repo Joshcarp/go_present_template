@@ -81,7 +81,8 @@ func BenchmarkDecimal(b *testing.B) {
 				// Run tests
 				for j := 0; j < b.N; j++ {
 					for _, test := range typeMap[typeNamelist[i]] {
-						runtests(test.v1, test.v2, t, test.op)
+						runtests(test, t)
+
 					}
 				}
 			})
@@ -109,8 +110,10 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 		a, _ = c.SetString(val1)
 		b, _ = d.SetString(val2)
 	case apd.Decimal:
-		a, _, _ = apd.NewFromString(val1)
-		b, _, _ = apd.NewFromString(val2)
+		c, _, _:= apd.NewFromString(val1)
+		d, _, _:= apd.NewFromString(val2)
+		a = c*
+		b = c*
 	case anz_optimised.DecParts:
 		a, _ = anz_optimised.ParseDecParts(val1)
 		b, _ = anz_optimised.ParseDecParts(val1)
@@ -120,8 +123,8 @@ func ParseDecimal(val1, val2 string, v interface{}) (a, b interface{}) {
 	return
 }
 
-// Run the testPaths
-func runtests(a, b, c interface{}, op string) {
+// // Run the testPaths
+func runtests(test testcase, t interface{}) {
 	if IgnorePanics {
 		defer func() {
 			if r := recover(); r != nil {
@@ -129,20 +132,40 @@ func runtests(a, b, c interface{}, op string) {
 			}
 		}()
 	}
-	switch a.(type) {
+	switch (test.v1).(type) {
 	case decimal.Decimal64:
-		execOp(a.(decimal.Decimal64), b.(decimal.Decimal64), c.(decimal.Decimal64), op)
+		a := test.v1.(decimal.Decimal64)
+		b := test.v1.(decimal.Decimal64)
+		c := t.(decimal.Decimal64)
+		execOp(&a, &b, &c, test.op)
 	case float64:
-		execOpFloat(a.(float64), b.(float64), c.(float64), op)
+		a := test.v1.(float64)
+		b := test.v1.(float64)
+		c := t.(float64)
+		execOpFloat(&a, &b, &c, test.op)
 	case shopspring.Decimal:
-		execOpShop(a.(shopspring.Decimal), b.(shopspring.Decimal), c.(shopspring.Decimal), op)
+		a := test.v1.(shopspring.Decimal)
+		b := test.v1.(shopspring.Decimal)
+		c := t.(shopspring.Decimal)
+		execOpShop(&a, &b, &c, test.op)
 	case ericlagergren.Big:
-		execOpEric(a.(ericlagergren.Big), b.(ericlagergren.Big), c.(ericlagergren.Big), op)
+		a := test.v1.(ericlagergren.Big)
+		b := test.v1.(ericlagergren.Big)
+		c := t.(ericlagergren.Big)
+		execOpEric(&a, &b, &c, test.op)
 	case apd.Decimal:
-		execOpAdp(a.(apd.Decimal), b.(apd.Decimal), c.(apd.Decimal), op)
-	case anz_optimised.DecParts:
-		execOpDec(a.(anz_optimised.DecParts), b.(anz_optimised.DecParts), c.(anz_optimised.DecParts), op)
+		a := test.v1.(apd.Decimal)
+		b := test.v1.(apd.Decimal)
+		c := t.(apd.Decimal)
+		execOpAdp(&a, &b, &c, test.op)
+	// case anz_optimised.DecParts:
+	// 	a := test.v1.(anz_optimised.DecParts)
+	// 	b := test.v1.(anz_optimised.DecParts)
+	// 	c := t.(anz_optimised.DecParts)
+	// 	execOpDec(&a, &b, &c, test.op)
+	default:
 	}
+
 }
 
 // getInput gets the test file and extracts test using regex, then returns a map object and a list of test names.
@@ -175,31 +198,31 @@ func getInput(line string) testCaseStrings {
 	}
 	return data
 }
-func execOpEric(a, b, c ericlagergren.Big, op string) {
+func execOpEric(a, b, c *ericlagergren.Big, op string) {
 	switch op {
 	case "add":
-		a.Add(&a, &b)
+		a.Add(a, b)
 	case "multiply":
-		a.Mul(&a, &b)
+		a.Mul(a, b)
 	case "abs":
-		a.Abs(&a)
+		a.Abs(a)
 	case "divide":
-		a.Quo(&a, &b)
+		a.Quo(a, b)
 	default:
 	}
 	// return ericlagergren.Big{}
 }
-func execOpFloat(a, b, c float64, op string) {
+func execOpFloat(a, b, c *float64, op string) {
 	var e float64
 	switch op {
 	case "add":
-		e = a + b
+		e = *a + *b
 	case "multiply":
-		e = a * b
+		e = *a * *b
 	case "abs":
-		e = math.Abs(a)
+		e = math.Abs(*a)
 	case "divide":
-		e = a / b
+		e = *a / *b
 	default:
 
 	}
@@ -209,66 +232,66 @@ func execOpFloat(a, b, c float64, op string) {
 
 }
 
-func execOpShop(a, b, c shopspring.Decimal, op string) {
+func execOpShop(a, b, c *shopspring.Decimal, op string) {
 	switch op {
 	case "add":
-		a.Add(b)
+		a.Add(*b)
 		// return
 	case "multiply":
-		a.Mul(b)
+		a.Mul(*b)
 	case "abs":
 		a.Abs()
 	case "divide":
 		// shopspring.Zero
-		// return a.Div(b)
+		a.Div(*b)
 	}
 	// shopspring.Zero
 }
-func execOp(a, b, c decimal.Decimal64, op string) {
+func execOp(a, b, c *decimal.Decimal64, op string) {
 	switch op {
 	case "add":
-		a.Add(b)
+		a.Add(*b)
 	case "multiply":
-		a.Mul(b)
+		a.Mul(*b)
 	case "abs":
 		a.Abs()
 	case "divide":
-		a.Quo(b)
+		a.Quo(*b)
 	default:
 	}
 	// return decimal.Zero64
 }
 
-func execOpDec(a, b, c anz_optimised.DecParts, op string) {
+func execOpDec(a, b, c *anz_optimised.DecParts, op string) {
 	switch op {
 	case "add":
-		a.Add(&b)
+		a.Add(b)
 	case "multiply":
-		a.Mul(&b)
+		a.Mul(b)
 	case "abs":
 		a.Abs()
 	case "divide":
 		// return anz_optimised.DecZero
-		a.Quo(&b)
+		a.Quo(b)
 	default:
 	}
 	// return anz_optimised.DecZero
 }
 
-func execOpAdp(a, b, c apd.Decimal, op string) {
+func execOpAdp(a, b, c *apd.Decimal, op string) {
 	switch op {
 	case "add":
 		r := apd.ErrDecimal{}
-		r.Add(&a, &a, &b)
+		r.Add(a, a, b)
 	case "multiply":
 		r := apd.ErrDecimal{}
-		r.Mul(&a, &a, &b)
+		r.Mul(a, a, b)
 	case "abs":
 		r := apd.ErrDecimal{}
-		r.Abs(&a, &b)
+		r.Abs(a, b)
 	case "divide":
 		r := apd.ErrDecimal{}
-		r.Quo(&a, &a, &b)
+		r.Quo(a, a, b)
 	default:
 	}
 	// apd.Decimal{}

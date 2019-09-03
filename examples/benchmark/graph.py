@@ -42,7 +42,7 @@ def generate_graph(responsetime_filename):
         x = np.arange(len(element.index))
         dupeInd = np.arange(len(dupes.index))
         bar_lst2 = []
-        # bar_lst2 = plt.bar(dupeInd, dupes.time.tolist())
+        bar_lst2 = plt.bar(dupeInd, dupes.time.tolist())
         bar_lst = plt.bar(x, element.time.tolist())
        
         colors = cycle([(232/255, 62/255, 93/255, 0.3),(65/255, 186/255, 99/255, 0.3),(87/255, 126/255, 199/255, 0.3),(232/255, 165/255, 0, 0.3)])
@@ -56,9 +56,9 @@ def generate_graph(responsetime_filename):
 
         plt.ylabel('ms/operation')
         plt.title(operation + " Benchmark")
-        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}.png", dpi=300, figsize=(50,25),  bbox_inches = 'tight')
+        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}_4.png", dpi=300, figsize=(50,25),  bbox_inches = 'tight')
 
 if __name__ == "__main__":
     # os.system("go test -bench=. > results.txt")
-    convertToCsv("resNoPoint.txt")
+    convertToCsv("res.txt")
     generate_graph("results.csv")

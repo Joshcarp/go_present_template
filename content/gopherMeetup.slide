@@ -2,14 +2,8 @@ Go for Decimals
 Tags: decimal, floating point, fixed precision, ieee 754R
 
 Joshua Carpeggiani
-Software Engineer, ANZ
+Software Engineer, ANZ*
 joshua.carpeggiani@anz.com
-
-* Go and ANZ
-: Go taking off as programming language of choice at ANZ
-: Banks need decimal data types see later
-: Existing decimal datatypes slow
-: With Arbitrary precision comes great inefficiency
 
 : Another Decimal Library
 : Open source project started by senior guy at anz without much time
@@ -22,7 +16,7 @@ joshua.carpeggiani@anz.com
 
 * Floating point numbers
 .html html/floatingpointbits.html
-.play ../examples/floatExample.go /^func main/,/^}/
+.code ../examples/floatExample.go /^func main/,/^}/
 - floats aren't sufficient
 
 * Scientific notation
@@ -158,7 +152,6 @@ Benchmarks are located at
 
 * Why?
 - Slower than expected
-- Some arbitrary precision libraries are faster than even builtin float64!
 - Theory: Maybe encoding/decoding has slowed it down
 * Encoding/Decoding a decimal floating point number
 .code ../examples/decParts.go  /START OMIT/,/END OMIT/
