@@ -18,6 +18,8 @@ joshua.carpeggiani@anz.com
 .html html/floatingpointbits.html
 .play ../examples/floatExample.go /^func main/,/^}/
 - floats aren't sufficient
+* History of floats
+.image img/File_001.png 500 _
 
 * Scientific notation
 
@@ -63,6 +65,10 @@ Repeated binary numbers:
 
 .code ../examples/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
+
+* History of floats
+.image img/FullTimeline.png 400 _
+
 
 * Decimal decoding
 .html html/decimalDecoding.html
