@@ -5,43 +5,12 @@ Joshua Carpeggiani
 Software Engineer, ANZ
 joshua.carpeggiani@anz.com
 
-* Gopher
-.image gopher.png
-: Another Decimal Library
-: Open source project started by senior guy at anz without much time
-: Enter Josh
-: Started with go in December 2018
-: First time working on Go and open source
-* Usage of decimal libraries
-.image img/decimalSurvey.png 600 _
-* Correctness
+* How do represent a non-integer number ... 
 
 * Floating point numbers
 .html html/floatingpointbits.html
 .play ../examples/floatExample.go /^func main/,/^}/
 - floats aren't sufficient
-* History of floats
-.image img/File_001.png 500 _
-
-* Scientific notation
-
-.html html/basic.html
-
-* Binary floating point numbers
-.html html/basicBinary.html
-: This number is equal to 9.3125
-
-* Floating point arithmetic
-- “Decoding” isn’t really needed
-
-.html html/floatingPointDecoding.html
-- Number of exponent is the same as the number of shifting places
-
-* Floating point arithmetic
-- “Decoding” isn’t really needed
-.html html/floatingPointDecoding2.html
-.play ../examples/bitshifts.go /^func main/,/^}/
-
 
 * The problem with floating point numbers
 Repeated decimal numbers:
@@ -60,6 +29,65 @@ Repeated binary numbers:
 
 .play ../examples/TimeRounding.go /^func main/,/^}/
 
+* Go types:
+- int, uint, float, complex
+
+* Usage of decimal libraries
+.image img/decimalSurvey.png 600 _
+* Correctness
+
+
+* Why is this?
+
+* late 1930's
+- Z1
+- Comes up with idea of +- inf, and NaN (Not a number) for special cases
+: This guy names Konrad Zuse came up with a way of storing "floating point numbers"
+
+* Next 30 years
+- floating point numbers implemented slightly differently
+
+* Until 1980
+- Intel 8087 released
+- FPU; "Floating Point Unit"
+- Used to speed up calculations via hardware implementations
+- C released 8 years before; no floating point numbers
+
+* 5 Years later: 1985
+- IEEE 754 standard:
+- Standardised floating point implementations across platforms
+- (check this): 1982 Ansi C would implement float as a builtin type
+- Implemented into almost every programming language and has hardware support on majorty of cpu architectures
+
+* Go types:
+- int, uint, float, complex
+
+* What's the fix?
+- Decimal arithmetic
+
+
+
+
+* History of floats
+.image img/File_001.png 500 _
+
+* Scientific notation
+
+.html html/basic.html
+
+* Binary floating point numbers
+.html html/basicBinary.html
+
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+
+.html html/floatingPointDecoding.html
+- Number of exponent is the same as the number of shifting places
+
+* Floating point arithmetic
+- “Decoding” isn’t really needed
+.html html/floatingPointDecoding2.html
+.play ../examples/bitshifts.go /^func main/,/^}/
 
 * Solution - Decimal datatype
 
@@ -89,12 +117,7 @@ shopspring seems to be unsupported; last commit was June 2018
 
 .code ../examples/bigInt.go /(?s)type Int struct {(.*)/
 
-: “Big decimals” and how they work (really just listing these points)
-: math/big → slice of bytes and does calculations from there
-: Other implementations are based on big ints, which are
-: Decimal(type big int) → nat → []word (type uint) (2 pointers)
-: This is fundamentally slower, and takes up more space, even for an empty decimal
-: Arithmetic needs to access slices, then calculate, then write to slice
+
 - Walking pointers is inherently going to be slower
 
 * Another Decimal library
@@ -103,18 +126,18 @@ shopspring seems to be unsupported; last commit was June 2018
 - Project Goal: Implement a 64 & 128 bit decimal floating point library
 - Conform as closely to ieee 754-2008 standard as practical
 
-: I came on board in december, and it was my first go project
-: The library already had quite a substantial code base
+
+
 
 * A decimal type optimized for performance
 .code ../examples/decimal.go /^type Decimal64 struct/,/^}/
 - Fast by intention, altough can only represent a max value of 999999999999999*10^384
 - Unlike big decimal which can represent arbitrarily large numbers
 
-: What would a go “style” decimal look like?
-: Elegant and self contained, only making use of essential math/bits packages
-: Simple uint64 type (decimal 128 type coming too)
-: This simplifies a lot of arithmetic, makes encoding and decoding simple and fast and is suitable for many use cases
+
+
+
+
 
 * Bit representation of ieee 754-2008 decimal floating point
 .html html/floatingpointbits.html
@@ -145,7 +168,6 @@ Benchmarks are located at
 
 .image img/Multiply_6.png 500 _
 
-
 * Why?
 - Slower than expected
 - Theory: Maybe encoding/decoding has slowed it down
@@ -173,7 +195,6 @@ Expands
 
 .image img/Multiply_5.png 500 _
 
-
 * ericlagergren Big decimal
 .code ../examples/ericDecimal.go /START OMIT/,/END OMIT/
 - combines the speed of fixed precision and the accuracy of arbitrary precision
@@ -191,8 +212,8 @@ Expands
 - More benchmarking + Cross platorm
 - A good, well supported decimal would boost adoption in financial sector
 - join the fun: github.com/anz-bank/decimal
-: We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
-: Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
+
+
 *   (overloading)
 .code ../examples/overloading.go /START OMIT/,/END OMIT/
 
