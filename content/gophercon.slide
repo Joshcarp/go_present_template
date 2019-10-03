@@ -29,15 +29,26 @@ Repeated binary numbers:
 
 .play ../examples/TimeRounding.go /^func main/,/^}/
 
+* Scientific notation
+
+.html html/basic.html
+
+* Binary floating point numbers
+.html html/basicBinary.html
+
+
 * Go types:
 - int, uint, float, complex
 
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
-* Correctness
 
+* Requirements of a number library
+1. Accuracy x
+2. Portability 
+3. Speed
 
-* Why is this?
+* Portability 
 
 * late 1930's
 - Z1
@@ -46,6 +57,9 @@ Repeated binary numbers:
 
 * Next 30 years
 - floating point numbers implemented slightly differently
+- Rounding attributes?
+- Rounding to infinity?
+- 1/0 or 0/0????
 
 * Until 1980
 - Intel 8087 released
@@ -59,35 +73,18 @@ Repeated binary numbers:
 - (check this): 1982 Ansi C would implement float as a builtin type
 - Implemented into almost every programming language and has hardware support on majorty of cpu architectures
 
+* Hardware support
+- Different architectures supporting the same standard to ensure the same results
+
+* Requirements of a number library
+1. Accuracy x
+2. Portability y
+3. Speed y 
+(Portability and Speed kinda come together)
+
+* The problem still exists
 * Go types:
 - int, uint, float, complex
-
-* What's the fix?
-- Decimal arithmetic
-
-
-
-
-* History of floats
-.image img/File_001.png 500 _
-
-* Scientific notation
-
-.html html/basic.html
-
-* Binary floating point numbers
-.html html/basicBinary.html
-
-* Floating point arithmetic
-- “Decoding” isn’t really needed
-
-.html html/floatingPointDecoding.html
-- Number of exponent is the same as the number of shifting places
-
-* Floating point arithmetic
-- “Decoding” isn’t really needed
-.html html/floatingPointDecoding2.html
-.play ../examples/bitshifts.go /^func main/,/^}/
 
 * Solution - Decimal datatype
 
@@ -96,11 +93,11 @@ Repeated binary numbers:
 .code ../examples/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
 
-* History of floats
-.image img/FullTimeline.png 400 _
-
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
+
+* IEEE 754-r
+- New and revised version released in 2018
 
 * Existing Go decimal datatypes
 .link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
@@ -108,46 +105,23 @@ Base 10 counting system instead of base 2
 .link https://github.com/shopspring/decimal github.com/shopspring/decimal
 shopspring seems to be unsupported; last commit was June 2018
 
-* 'Arbitrary precision' decimals
-'Big Decimals'
-- Based on big.int
-- Allows for arbitrary precision
-
-.code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
-
-.code ../examples/bigInt.go /(?s)type Int struct {(.*)/
-
-
-- Walking pointers is inherently going to be slower
-
-* Another Decimal library
-.link http://www.github.com/anz-bank/decimal
-
-- Project Goal: Implement a 64 & 128 bit decimal floating point library
-- Conform as closely to ieee 754-2008 standard as practical
-
-
-
-
-* A decimal type optimized for performance
-.code ../examples/decimal.go /^type Decimal64 struct/,/^}/
-- Fast by intention, altough can only represent a max value of 999999999999999*10^384
-- Unlike big decimal which can represent arbitrarily large numbers
-
-
-
-
-
-
-* Bit representation of ieee 754-2008 decimal floating point
+* Bit representation of IEEE 754-2008 decimal floating point
 .html html/floatingpointbits.html
 .html html/decimalpointbits.html
+
 pros:
 - small footprint within single uint64
 - nice and clean
 - no pointers 
 cons:
 - No arbitrary precision
+
+* IEEE 754-r
+- New and revised version released in 2018
+
+* A new decimal library in go
+- Follows 2008-r standard
+- Allows for future hardware support and optimisations
 
 * Benchmarking
 Testing
@@ -166,56 +140,15 @@ Benchmarks are located at
 
 * Arithmetic benchmarks - Multiply
 
-.image img/Multiply_6.png 500 _
+* Requirements of a number library
+1. Accuracy y
+2. Portability y
+3. Speed y 
 
-* Why?
-- Slower than expected
-- Theory: Maybe encoding/decoding has slowed it down
-* Encoding/Decoding a decimal floating point number
-.code ../examples/decParts.go  /START OMIT/,/END OMIT/
-
-- starting to look a little like Big decimals ...
-* Why?
-.code ../examples/ansFunction.go /START OMIT/,/END OMIT/
-- first thing we need to do is encode, last thing we do is decode
-* Why?
-.html html/decimalpointbits.html
-
-Expands 
-
-.html html/decExpanded.html
-
-* Decimal decoding
-.html html/decimalDecoding.html
-
-* Benchmarks v2
-- removing the encoding and decoding; only use struct
-
-* Arithmetic benchmarks - Multiply
-
-.image img/Multiply_5.png 500 _
-
-* ericlagergren Big decimal
-.code ../examples/ericDecimal.go /START OMIT/,/END OMIT/
-- combines the speed of fixed precision and the accuracy of arbitrary precision
-- doesn't actually pass around any structs
- 
-  func (c Context) Add(z, x, y *Big) *Big { 
-
-
-* Decimal comparisons
-
-.html html/comparison.html
-
-* In the future
-- Need to optimise more
-- More benchmarking + Cross platorm
-- A good, well supported decimal would boost adoption in financial sector
-- join the fun: github.com/anz-bank/decimal
-
-
-*   (overloading)
-.code ../examples/overloading.go /START OMIT/,/END OMIT/
+* Looking forward 
+- More optimisation 
+- Expand math library
+- Implement 128 and 64 bit
 
 * Links
 - Graphics adapted fromfrom
