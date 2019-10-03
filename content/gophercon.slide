@@ -1,16 +1,28 @@
 Go for Decimals
-Tags: decimal, floating point, fixed precision, ieee 754R
+Tags: decimal, floating point, fixed precision, IEEE 754R
 
 Joshua Carpeggiani
 Software Engineer, ANZ
 joshua.carpeggiani@anz.com
 
-* How do represent a non-integer number ... 
+* Floating point numbers
+.play ../examples/floatExample.go /^func main/,/^}/
+- floats aren't sufficient for precision
+
+* Scientific notation
+
+.html html/basic.html
+
+* Binary floating point numbers
+.html html/basicBinary.html
+
+* Floating point numbers
+.html html/floatingpointbits.html
 
 * Floating point numbers
 .html html/floatingpointbits.html
 .play ../examples/floatExample.go /^func main/,/^}/
-- floats aren't sufficient
+- floats aren't sufficient for precision
 
 * The problem with floating point numbers
 Repeated decimal numbers:
@@ -20,8 +32,10 @@ Repeated binary numbers:
 
 * Why?
 .html html/Sheet2.html
+
 * Why?
 .image img/BinDec.png _ 500
+
 * When does this matter?
 
 - Compounding errors
@@ -29,62 +43,34 @@ Repeated binary numbers:
 
 .play ../examples/TimeRounding.go /^func main/,/^}/
 
-* Scientific notation
 
-.html html/basic.html
+* Go Basic types
 
-* Binary floating point numbers
-.html html/basicBinary.html
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias for uint8
+
+	rune // alias for int32
+	     // represents a Unicode code point
+
+	float32 float64
+
+	complex64 complex128
 
 
-* Go types:
-- int, uint, float, complex
 
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
 
-* Requirements of a number library
-1. Accuracy x
-2. Portability 
-3. Speed
-
-* Portability 
-
-* late 1930's
-- Z1
-- Comes up with idea of +- inf, and NaN (Not a number) for special cases
-: This guy names Konrad Zuse came up with a way of storing "floating point numbers"
-
-* Next 30 years
-- floating point numbers implemented slightly differently
-- Rounding attributes?
-- Rounding to infinity?
-- 1/0 or 0/0????
-
-* Until 1980
-- Intel 8087 released
-- FPU; "Floating Point Unit"
-- Used to speed up calculations via hardware implementations
-- C released 8 years before; no floating point numbers
-
-* 5 Years later: 1985
-- IEEE 754 standard:
-- Standardised floating point implementations across platforms
-- (check this): 1982 Ansi C would implement float as a builtin type
-- Implemented into almost every programming language and has hardware support on majorty of cpu architectures
-
-* Hardware support
-- Different architectures supporting the same standard to ensure the same results
-
-* Requirements of a number library
-1. Accuracy x
-2. Portability y
-3. Speed y 
-(Portability and Speed kinda come together)
-
-* The problem still exists
-* Go types:
-- int, uint, float, complex
+* Requirements of a number library: Binary floats
+1. Accuracy ✘
+2. Portability ?
+3. Speed ?
 
 * Solution - Decimal datatype
 
@@ -93,31 +79,99 @@ Repeated binary numbers:
 .code ../examples/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
 
-* Usage of decimal libraries
-.image img/decimalSurvey.png 600 _
-
-* IEEE 754-r
-- New and revised version released in 2018
-
-* Existing Go decimal datatypes
-.link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
-.link https://github.com/cockroachdb/apd github.com/cockroachdb/apd
-.link https://github.com/shopspring/decimal github.com/shopspring/decimal
-shopspring seems to be unsupported; last commit was June 2018
-
 * Bit representation of IEEE 754-2008 decimal floating point
 .html html/floatingpointbits.html
 .html html/decimalpointbits.html
 
-pros:
-- small footprint within single uint64
-- nice and clean
-- no pointers 
-cons:
-- No arbitrary precision
+* Usage of decimal libraries
+.image img/decimalSurvey.png 600 _
 
-* IEEE 754-r
-- New and revised version released in 2018
+* Existing Go decimal datatypes
+.link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
+.link https://github.com/shopspring/decimal github.com/shopspring/decimal
+shopspring seems to be unsupported; last commit was June 2018
+
+
+
+* Portability and Speed
+
+* 1930's 
+- Konrad Zuse invents the first binary, programmable computer.
+.image img/Z1.jpeg
+- Ability of floating point calculation of 24 bits
+- Comes up with idea of +- inf, and NaN (Not a number) for special cases
+: This guy names Konrad Zuse came up with a way of storing "floating point numbers"
+
+* Next 30 years
+- floating point numbers implemented slightly differently
+- Rounding attributes?
+- Rounding to infinity?
+- does -0 == +0 ?
+- 1/0 or 0/0????
+
+
+* 1980
+.image img/8087.jpg 200 _
+- Intel 8087 released
+- FPU; "Floating Point Unit"
+- Used to speed up calculations via hardware implementations
+: C released 8 years previously and didn;t have a builtin float type
+
+* 1980
+.image img/8087_inside.jpg 600 _
+
+* 1980
+.image img/8087_schematic.jpg 600 _
+
+
+* 1985
+- IEEE 754 standard:
+- Standardised floating point implementations across platforms
+- Implemented into almost every programming language and has hardware support on majorty of cpu architectures
+* IEEE 754 standard:
+- 5 Rounding attributes
+- +- inf
+- -0 == +0
+- 1/0 == +inf
+- 0/0 == NaN
+
+* Binary floating point Add
+    func Add(x, y float64) float64 {
+            return x + y
+        }
+
+* Binary floating point Assembler
+    func Add(x, y float64) float64 {
+        return x + y
+    }
+
+    "".Add STEXT nosplit size=23 args=0x18 locals=0x0
+    TEXT	"".Add(SB), NOSPLIT|ABIInternal, $0-24
+    FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA	$3, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    PCDATA	$2, $0
+    PCDATA	$0, $0
+    MOVSD	"".x+8(SP), X0
+    MOVSD	"".y+16(SP), X1
+    ADDSD	X1, X0
+    MOVSD	X0, "".~r2+24(SP)
+    RET
+
+* ADDSD
+"Add Scalar Double-Precision Floating-Point Values"
+
+* Requirements of a number library: Binary floats
+1. Accuracy ✘
+2. Portability ✓
+3. Speed ✓
+
+* Requirements of a number library: Binary floats
+1. Accuracy ✘
+2. Portability ✓
+3. Speed ✓
+(Portability and Speed kinda come together)
+
 
 * A new decimal library in go
 - Follows 2008-r standard
@@ -138,21 +192,75 @@ Note: these benchmarks are testing edgecases
 Benchmarks are located at
 .link https://github.com/joshcarp/decimal-slides
 
-* Arithmetic benchmarks - Multiply
+* Arithmetic benchmarks - Add
+.image img/Add_5.png 500 _
 
-* Requirements of a number library
-1. Accuracy y
-2. Portability y
-3. Speed y 
+* Binary floating point Assembler
+    func (d Decimal64) Add(e Decimal64) Decimal64 {
+        dp := d.getParts()
+        ep := e.getParts()
+        var ans DecParts
+        // Arithmetic here ...
+        return newFromParts(ans)
+ 
+    "".Add STEXT nosplit size=23 args=0x18 locals=0x0
+    TEXT    "".Add(SB), NOSPLIT|ABIInternal, $0-24
+    FUNCDATA    $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA    $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA    $3, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    PCDATA    $2, $0
+    PCDATA    $0, $0
+    MOVSD    "".x+8(SP), X0
+    MOVSD    "".y+16(SP), X1
+    ADDSD    X1, X0
+    MOVSD    X0, "".~r2+24(SP)
+    RET
 
-* Looking forward 
-- More optimisation 
-- Expand math library
+* Decimal Arithmetic in Go
+    func (d Decimal64) Add(e Decimal64) Decimal64 {
+        dp := d.getParts()
+        ep := e.getParts()
+        if dec := propagateNan(&dp, &ep); dec != nil {
+            return *dec
+        }
+        if dp.fl == flInf || ep.fl == flInf {
+            // Check infinities
+        }
+        // ...
+        // Match scales
+        var rndStatus discardedDigit
+        dp.matchScales128(&ep)
+        ans := dp.add128(&ep)
+        rndStatus = ans.roundToLo()
+        if ans.exp < -expOffset {
+            rndStatus = ans.rescale(-expOffset)
+        }
+        // Do the calculation ...
+        ans.significand.lo = ctx.roundingMode.round(ans.significand.lo, rndStatus)
+        if ans.exp >= -expOffset && ans.significand.lo != 0 {
+            ans.exp, ans.significand.lo = renormalize(ans.exp, ans.significand.lo)
+        }
+        if ans.exp > expMax || ans.significand.lo > maxSig {
+            return infinities[ans.sign]
+        }
+        return newFromParts(ans.sign, ans.exp, ans.significand.lo)
+    }
+
+* Decimal Arithmetic in Assembler
+.code ../examples/AddDec.asm
+
+
+* Requirements of a number library: Decimal floats
+1. Accuracy ✓
+2. Portability ✓
+3. Speed ✗ (not yet)
+
+* Looking forward
+- More optimisation
 - Implement 128 and 64 bit
+- Assembler optimisations
 
 * Links
-- Graphics adapted fromfrom
-.link https://ciechanow.ski/exposing-floating-point/
 
 - Benchmarking
 .link https://github.com/joshcarp/decimal-slides
