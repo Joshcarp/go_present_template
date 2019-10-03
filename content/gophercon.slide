@@ -1,19 +1,13 @@
 Go for Decimals
-Tags: decimal, floating point, fixed precision, ieee 754R
+Tags: decimal, floating point, fixed precision, IEEE 754R
 
 Joshua Carpeggiani
 Software Engineer, ANZ
 joshua.carpeggiani@anz.com
 
-
-* How do I count in binary numbers?
-    float32
-    float64
-
-* 1938 
-- Konrad Zuse invents the first binary, programmable computer.
-.image img/Z1.jpeg
-- Ability of floating point calculation of 24 bits
+* Floating point numbers
+.play ../examples/floatExample.go /^func main/,/^}/
+- floats aren't sufficient for precision
 
 * Scientific notation
 
@@ -37,14 +31,10 @@ Repeated binary numbers:
 .html html/decFrac.html
 
 * Why?
-- Incomplete number line
+.html html/Sheet2.html
 
 * Why?
 .image img/BinDec.png _ 500
-
-* Why?
-.image img/BinDec.png _ 500
-- Given a fixed precision*
 
 * When does this matter?
 
@@ -77,16 +67,38 @@ Repeated binary numbers:
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
 
-* Requirements of a number library
-1. Accuracy ✗
-2. Portability 
-3. Speed 
+* Requirements of a number library: Binary floats
+1. Accuracy ✘
+2. Portability ?
+3. Speed ?
+
+* Solution - Decimal datatype
+
+.html html/110decimal.html
+
+.code ../examples/decimalExample.go /^func main/,/^}/
+Base 10 counting system instead of base 2
+
+* Bit representation of IEEE 754-2008 decimal floating point
+.html html/floatingpointbits.html
+.html html/decimalpointbits.html
+
+* Usage of decimal libraries
+.image img/decimalSurvey.png 600 _
+
+* Existing Go decimal datatypes
+.link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
+.link https://github.com/shopspring/decimal github.com/shopspring/decimal
+shopspring seems to be unsupported; last commit was June 2018
 
 
-* Portability of Binary Floating Point numbers
 
-* late 1930's
-- Z1
+* Portability and Speed
+
+* 1930's 
+- Konrad Zuse invents the first binary, programmable computer.
+.image img/Z1.jpeg
+- Ability of floating point calculation of 24 bits
 - Comes up with idea of +- inf, and NaN (Not a number) for special cases
 : This guy names Konrad Zuse came up with a way of storing "floating point numbers"
 
@@ -97,15 +109,13 @@ Repeated binary numbers:
 - does -0 == +0 ?
 - 1/0 or 0/0????
 
-* 1980
-.image img/8087.jpg 200 _
 
 * 1980
 .image img/8087.jpg 200 _
 - Intel 8087 released
 - FPU; "Floating Point Unit"
 - Used to speed up calculations via hardware implementations
-- C released 8 years before; no floating point numbers
+: C released 8 years previously and didn;t have a builtin float type
 
 * 1980
 .image img/8087_inside.jpg 600 _
@@ -151,58 +161,17 @@ Repeated binary numbers:
 * ADDSD
 "Add Scalar Double-Precision Floating-Point Values"
 
-* Requirements of a number library
+* Requirements of a number library: Binary floats
 1. Accuracy ✘
 2. Portability ✓
 3. Speed ✓
 
-* Requirements of a number library
+* Requirements of a number library: Binary floats
 1. Accuracy ✘
 2. Portability ✓
 3. Speed ✓
 (Portability and Speed kinda come together)
 
-* Still not Accurate
-0.1 + 0.1 + 0.1 != 0.3
-
-* IEEE 754-r
-- New and revised version released in 2018
-
-* Solution - Decimal datatype
-
-.html html/110decimal.html
-not 
-
-
-* Solution - Decimal datatype
-
-.html html/110decimal.html
-
-.code ../examples/decimalExample.go /^func main/,/^}/
-Base 10 counting system instead of base 2
-
-* Usage of decimal libraries
-.image img/decimalSurvey.png 600 _
-
-* Existing Go decimal datatypes
-.link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
-.link https://github.com/cockroachdb/apd github.com/cockroachdb/apd
-.link https://github.com/shopspring/decimal github.com/shopspring/decimal
-shopspring seems to be unsupported; last commit was June 2018
-
-* Bit representation of IEEE 754-2008 decimal floating point
-.html html/floatingpointbits.html
-.html html/decimalpointbits.html
-
-pros:
-- small footprint within single uint64
-- nice and clean
-- no pointers 
-cons:
-- No arbitrary precision
-
-* IEEE 754-r
-- New and revised version released in 2018
 
 * A new decimal library in go
 - Follows 2008-r standard
@@ -281,19 +250,15 @@ Benchmarks are located at
 .code ../examples/AddDec.asm
 
 
-* Requirements of a number library
+* Requirements of a number library: Decimal floats
 1. Accuracy ✓
 2. Portability ✓
-3. Speed ✗
+3. Speed ✗ (not yet)
 
-* Requirements of a number library
-1. Accuracy ✓
-2. Portability ✓
-3. Speed ✗ (not quite)
-
-* Looking forward 
-- More optimisation 
+* Looking forward
+- More optimisation
 - Implement 128 and 64 bit
+- Assembler optimisations
 
 * Links
 
