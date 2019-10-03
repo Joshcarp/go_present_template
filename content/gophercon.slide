@@ -112,11 +112,27 @@ Repeated binary numbers:
 - 0/0 == NaN
 
 * Binary floating point Add
-.code ../examples/Add.go /START OMIT/,/END OMIT/
+    func Add(x, y float64) float64 {
+            return x + y
+        }
 
 * Binary floating point Assembler
-.code ../examples/Add.go /START OMIT/,/END OMIT/
-.code ../examples/Add.asm
+    func Add(x, y float64) float64 {
+        return x + y
+    }
+
+    "".Add STEXT nosplit size=23 args=0x18 locals=0x0
+    TEXT	"".Add(SB), NOSPLIT|ABIInternal, $0-24
+    FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA	$1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA	$3, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    PCDATA	$2, $0
+    PCDATA	$0, $0
+    MOVSD	"".x+8(SP), X0
+    MOVSD	"".y+16(SP), X1
+    ADDSD	X1, X0
+    MOVSD	X0, "".~r2+24(SP)
+    RET
 
 * ADDSD
 "Add Scalar Double-Precision Floating-Point Values"
@@ -218,7 +234,34 @@ Benchmarks are located at
     RET
 
 * Decimal Arithmetic in Go
-.code ../examples/AddDec.go /START OMIT/,/END OMIT/
+    func (d Decimal64) Add(e Decimal64) Decimal64 {
+        dp := d.getParts()
+        ep := e.getParts()
+        if dec := propagateNan(&dp, &ep); dec != nil {
+            return *dec
+        }
+        if dp.fl == flInf || ep.fl == flInf {
+            // Check infinities
+        }
+        // ...
+        // Match scales
+        var rndStatus discardedDigit
+        dp.matchScales128(&ep)
+        ans := dp.add128(&ep)
+        rndStatus = ans.roundToLo()
+        if ans.exp < -expOffset {
+            rndStatus = ans.rescale(-expOffset)
+        }
+        // Do the calculation ...
+        ans.significand.lo = ctx.roundingMode.round(ans.significand.lo, rndStatus)
+        if ans.exp >= -expOffset && ans.significand.lo != 0 {
+            ans.exp, ans.significand.lo = renormalize(ans.exp, ans.significand.lo)
+        }
+        if ans.exp > expMax || ans.significand.lo > maxSig {
+            return infinities[ans.sign]
+        }
+        return newFromParts(ans.sign, ans.exp, ans.significand.lo)
+    }
 
 * Decimal Arithmetic in Assembler
 .code ../examples/AddDec.asm
