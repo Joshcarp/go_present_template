@@ -5,7 +5,19 @@ Joshua Carpeggiani
 Software Engineer, ANZ
 joshua.carpeggiani@anz.com
 
-* How do represent a non-integer number ... 
+
+* How do I count in binary numbers?
+- Numbers and stuff
+
+* 1938 
+- Konrad Zuse invents the first binary, programmable computer.
+
+* Scientific notation
+
+.html html/basic.html
+
+* Binary floating point numbers
+.html html/basicBinary.html
 
 * Floating point numbers
 .html html/floatingpointbits.html
@@ -19,9 +31,15 @@ Repeated binary numbers:
 .html html/decFrac.html
 
 * Why?
-.html html/Sheet2.html
+- Incomplete number line
+
 * Why?
 .image img/BinDec.png _ 500
+
+* Why?
+.image img/BinDec.png _ 500
+- Given a fixed precision*
+
 * When does this matter?
 
 - Compounding errors
@@ -29,24 +47,34 @@ Repeated binary numbers:
 
 .play ../examples/TimeRounding.go /^func main/,/^}/
 
-* Scientific notation
 
-.html html/basic.html
+* Go Basic types
 
-* Binary floating point numbers
-.html html/basicBinary.html
+	bool
+
+	string
+
+	int  int8  int16  int32  int64
+	uint uint8 uint16 uint32 uint64 uintptr
+
+	byte // alias for uint8
+
+	rune // alias for int32
+	     // represents a Unicode code point
+
+	float32 float64
+
+	complex64 complex128
 
 
-* Go types:
-- int, uint, float, complex
 
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
 
 * Requirements of a number library
-1. Accuracy x
+1. Accuracy ✗
 2. Portability 
-3. Speed
+3. Speed 
 
 * Portability 
 
@@ -59,32 +87,59 @@ Repeated binary numbers:
 - floating point numbers implemented slightly differently
 - Rounding attributes?
 - Rounding to infinity?
+- does -0 == +0 ?
 - 1/0 or 0/0????
 
-* Until 1980
+* 1980
+.image img/8087.jpg 200 _
+
+* 1980
+.image img/8087.jpg 200 _
 - Intel 8087 released
 - FPU; "Floating Point Unit"
 - Used to speed up calculations via hardware implementations
 - C released 8 years before; no floating point numbers
 
-* 5 Years later: 1985
+* 1985
 - IEEE 754 standard:
 - Standardised floating point implementations across platforms
-- (check this): 1982 Ansi C would implement float as a builtin type
 - Implemented into almost every programming language and has hardware support on majorty of cpu architectures
+* IEEE 754 standard:
+- 5 Rounding attributes
+- +- inf
+- -0 == +0
+- 1/0 == +inf
+- 0/0 == NaN
 
-* Hardware support
-- Different architectures supporting the same standard to ensure the same results
+* Binary floating point Add
+.code ../examples/Add.go /START OMIT/,/END OMIT/
+
+* Binary floating point Assembler
+.code ../examples/Add.go /START OMIT/,/END OMIT/
+.code ../examples/Add.asm
+
+* ADDSD
+"Add Scalar Double-Precision Floating-Point Values"
 
 * Requirements of a number library
-1. Accuracy x
-2. Portability y
-3. Speed y 
+1. Accuracy ✘
+2. Portability ✓
+3. Speed ✓
+
+* Requirements of a number library
+1. Accuracy ✘
+2. Portability ✓
+3. Speed ✓
 (Portability and Speed kinda come together)
 
-* The problem still exists
-* Go types:
-- int, uint, float, complex
+* Still not Accurate
+0.1 + 0.1 + 0.1 != 0.3
+
+* Solution - Decimal datatype
+
+.html html/110decimal.html
+not 
+
 
 * Solution - Decimal datatype
 
@@ -138,16 +193,49 @@ Note: these benchmarks are testing edgecases
 Benchmarks are located at
 .link https://github.com/joshcarp/decimal-slides
 
-* Arithmetic benchmarks - Multiply
+* Arithmetic benchmarks - Add
+.image img/Add_5.png 500 _
+
+* Binary floating point Assembler
+    func (d Decimal64) Add(e Decimal64) Decimal64 {
+        dp := d.getParts()
+        ep := e.getParts()
+        var ans DecParts
+        // Arithmetic here ...
+        return newFromParts(ans)
+ 
+    "".Add STEXT nosplit size=23 args=0x18 locals=0x0
+    TEXT    "".Add(SB), NOSPLIT|ABIInternal, $0-24
+    FUNCDATA    $0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA    $1, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    FUNCDATA    $3, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
+    PCDATA    $2, $0
+    PCDATA    $0, $0
+    MOVSD    "".x+8(SP), X0
+    MOVSD    "".y+16(SP), X1
+    ADDSD    X1, X0
+    MOVSD    X0, "".~r2+24(SP)
+    RET
+
+* Decimal Arithmetic in Go
+.code ../examples/AddDec.go /START OMIT/,/END OMIT/
+
+* Decimal Arithmetic in Assembler
+.code ../examples/AddDec.asm
+
 
 * Requirements of a number library
-1. Accuracy y
-2. Portability y
-3. Speed y 
+1. Accuracy ✓
+2. Portability ✓
+3. Speed ✗
+
+* Requirements of a number library
+1. Accuracy ✓
+2. Portability ✓
+3. Speed ✗ (not quite)
 
 * Looking forward 
 - More optimisation 
-- Expand math library
 - Implement 128 and 64 bit
 
 * Links
