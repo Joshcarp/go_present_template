@@ -23,6 +23,7 @@ MOVUPS	24(SP), X0
 MOVUPS	X0, "".dp+144(SP)
 MOVUPS	40(SP), X0
 MOVUPS	X0, "".dp+160(SP)
+// PT 2
 MOVQ	"".e+304(SP), AX
 MOVQ	AX, (SP)
 CALL	"".Decimal64.getParts(SB)
@@ -73,6 +74,7 @@ MOVQ	AX, "".~r2+312(SP)
 MOVQ	272(SP), BP
 ADDQ	$280, SP
 RET
+// PT 3
 PCDATA	$0, $4
 MOVQ	"".dp+136(SP), AX
 PCDATA	$0, $0

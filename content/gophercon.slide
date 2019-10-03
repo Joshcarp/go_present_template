@@ -102,7 +102,7 @@ shopspring seems to be unsupported; last commit was June 2018
 - Comes up with idea of +- inf, and NaN (Not a number) for special cases
 : This guy names Konrad Zuse came up with a way of storing "floating point numbers"
 
-* Next 30 years
+* Next 50 years
 - floating point numbers implemented slightly differently
 - Rounding attributes?
 - Rounding to infinity?
@@ -144,7 +144,7 @@ shopspring seems to be unsupported; last commit was June 2018
     func Add(x, y float64) float64 {
         return x + y
     }
-
+ 
     "".Add STEXT nosplit size=23 args=0x18 locals=0x0
     TEXT	"".Add(SB), NOSPLIT|ABIInternal, $0-24
     FUNCDATA	$0, gclocals·33cdeccccebe80329f1fdbee7f5874cb(SB)
@@ -195,13 +195,11 @@ Benchmarks are located at
 * Arithmetic benchmarks - Add
 .image img/Add_5.png 500 _
 
+
 * Binary floating point Assembler
-    func (d Decimal64) Add(e Decimal64) Decimal64 {
-        dp := d.getParts()
-        ep := e.getParts()
-        var ans DecParts
-        // Arithmetic here ...
-        return newFromParts(ans)
+    func Add(x, y float64) float64 {
+        return x + y
+    }
  
     "".Add STEXT nosplit size=23 args=0x18 locals=0x0
     TEXT    "".Add(SB), NOSPLIT|ABIInternal, $0-24
@@ -249,6 +247,11 @@ Benchmarks are located at
 * Decimal Arithmetic in Assembler
 .code ../examples/AddDec.asm
 
+* Decimal Arithmetic in Assembler
+.code ../examples/AddDec.asm  /^// PT 2/,/// PT 3/
+
+* Decimal Arithmetic in Assembler
+.code ../examples/AddDec.asm  /^// PT 3/,
 
 * Requirements of a number library: Decimal floats
 1. Accuracy ✓
