@@ -87,7 +87,15 @@ shopspring seems to be unsupported; last commit was June 2018
 
 .code ../examples/bigDecimal.go  /^type Decimal struct/,/^}/
 
-.code ../examples/bigInt.go /(?s)type Int struct {(.*)/
+    type Int struct {
+        neg bool // sign
+        abs nat  // absolute value of the integer
+    }
+
+    type nat []Word
+
+    type Word uint
+
 
 : “Big decimals” and how they work (really just listing these points)
 : math/big → slice of bytes and does calculations from there
@@ -107,7 +115,11 @@ shopspring seems to be unsupported; last commit was June 2018
 : The library already had quite a substantial code base
 
 * A decimal type optimized for performance
-.code ../examples/decimal.go /^type Decimal64 struct/,/^}/
+    type Decimal64 struct {
+        bits uint64
+    }
+
+
 - Fast by intention, altough can only represent a max value of 999999999999999*10^384
 - Unlike big decimal which can represent arbitrarily large numbers
 
@@ -150,11 +162,27 @@ Benchmarks are located at
 - Slower than expected
 - Theory: Maybe encoding/decoding has slowed it down
 * Encoding/Decoding a decimal floating point number
-.code ../examples/decParts.go  /START OMIT/,/END OMIT/
 
+    type Decimal64 struct {
+        bits uint64
+    }
+
+    type DecParts struct {
+        fl          flavor
+        sign        int
+        exp         int
+        significand uint128T
+        dec         *Decimal64
+    }
 - starting to look a little like Big decimals ...
 * Why?
-.code ../examples/ansFunction.go /START OMIT/,/END OMIT/
+    func (d Decimal64) Add(e Decimal64) Decimal64 {
+        dp := d.getParts()
+        ep := e.getParts()
+        var ans DecParts
+        // Arithmetic here ...
+        return newFromParts(ans)
+    }
 - first thing we need to do is encode, last thing we do is decode
 * Why?
 .html html/decimalpointbits.html
@@ -175,7 +203,16 @@ Expands
 
 
 * ericlagergren Big decimal
-.code ../examples/ericDecimal.go /START OMIT/,/END OMIT/
+    type Big struct {
+        // Context is used to give info like rounding modes and all
+        Context Context
+
+        // unscaled is only used if the decimal is too large to fit in compact.
+        unscaled big.Int
+        compact  uint64
+        exp      int
+
+        // ... more utility fields ...
 - combines the speed of fixed precision and the accuracy of arbitrary precision
 - doesn't actually pass around any structs
  
@@ -194,7 +231,14 @@ Expands
 : We’d love for decimal to be part of the go core, might also boost adoption in the finance sector
 : Show an application of anz-bank decimal, and how code would be a lot more elegant with operator overloading and such
 *   (overloading)
-.code ../examples/overloading.go /START OMIT/,/END OMIT/
+	b := decimal.MustParseDecimal64("0.3")
+	c := decimal.MustParseDecimal64("0.1")
+	a := c.Mul(a)
+
+	// or something like
+	a := 0.3
+	b := 0.1
+	c := c * a
 
 * Links
 - Graphics adapted fromfrom

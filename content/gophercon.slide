@@ -7,10 +7,13 @@ joshua.carpeggiani@anz.com
 
 
 * How do I count in binary numbers?
-- Numbers and stuff
+    float32
+    float64
 
 * 1938 
 - Konrad Zuse invents the first binary, programmable computer.
+.image img/Z1.jpeg
+- Ability of floating point calculation of 24 bits
 
 * Scientific notation
 
@@ -21,8 +24,11 @@ joshua.carpeggiani@anz.com
 
 * Floating point numbers
 .html html/floatingpointbits.html
+
+* Floating point numbers
+.html html/floatingpointbits.html
 .play ../examples/floatExample.go /^func main/,/^}/
-- floats aren't sufficient
+- floats aren't sufficient for precision
 
 * The problem with floating point numbers
 Repeated decimal numbers:
@@ -76,7 +82,8 @@ Repeated binary numbers:
 2. Portability 
 3. Speed 
 
-* Portability 
+
+* Portability of Binary Floating Point numbers
 
 * late 1930's
 - Z1
@@ -99,6 +106,13 @@ Repeated binary numbers:
 - FPU; "Floating Point Unit"
 - Used to speed up calculations via hardware implementations
 - C released 8 years before; no floating point numbers
+
+* 1980
+.image img/8087_inside.jpg 600 _
+
+* 1980
+.image img/8087_schematic.jpg 600 _
+
 
 * 1985
 - IEEE 754 standard:
@@ -151,6 +165,9 @@ Repeated binary numbers:
 * Still not Accurate
 0.1 + 0.1 + 0.1 != 0.3
 
+* IEEE 754-r
+- New and revised version released in 2018
+
 * Solution - Decimal datatype
 
 .html html/110decimal.html
@@ -166,9 +183,6 @@ Base 10 counting system instead of base 2
 
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
-
-* IEEE 754-r
-- New and revised version released in 2018
 
 * Existing Go decimal datatypes
 .link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
@@ -282,8 +296,6 @@ Benchmarks are located at
 - Implement 128 and 64 bit
 
 * Links
-- Graphics adapted fromfrom
-.link https://ciechanow.ski/exposing-floating-point/
 
 - Benchmarking
 .link https://github.com/joshcarp/decimal-slides
