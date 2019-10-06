@@ -8,6 +8,7 @@ joshua.carpeggiani@anz.com
 
 * 
 .image img/twitter.png 500 _
+
 * Floating point numbers
 .play ../examples/floatExample.go /^func main/,/^}/
 
@@ -22,6 +23,12 @@ joshua.carpeggiani@anz.com
 : Floats are inaccurate
 : This is the problem I want to show alternatives for
 
+* Floating point numbers
+
+- Compounding errors
+- Need for exact numbers
+
+.play ../examples/TimeRounding.go /^func main/,/^}/
 
 : And to fix this, we need to go back a little bit to school; 
 
@@ -64,13 +71,6 @@ Repeated binary numbers:
 * Why?
 .image img/BinDec.png _ 500
 
-* When does this matter?
-
-- Compounding errors
-- Need for exact numbers
-
-.play ../examples/TimeRounding.go /^func main/,/^}/
-
 
 * Go Basic types
 
@@ -104,7 +104,7 @@ Repeated binary numbers:
 
 .html html/110decimal.html
 
-.code ../examples/decimalExample.go /^func main/,/^}/
+.play ../examples/decimal/decimalExample.go /^func main/,/^}/
 Base 10 counting system instead of base 2
 
 * Bit representation of IEEE 754-2008 decimal floating point

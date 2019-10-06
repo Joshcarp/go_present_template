@@ -1,0 +1,18 @@
+# github.com/Joshcarp/decimalOptimised v0.0.0-20190902101743-38cd840b6571
+github.com/Joshcarp/decimalOptimised
+# github.com/anz-bank/decimal v0.0.0-20190826034759-d47b92adb069
+github.com/anz-bank/decimal
+# github.com/ericlagergren/decimal v0.0.0-20190729173012-f05d33913e5a
+github.com/ericlagergren/decimal
+github.com/ericlagergren/decimal/internal/arith
+github.com/ericlagergren/decimal/internal/c
+# github.com/shopspring/decimal v0.0.0-20180709203117-cd690d0c9e24
+github.com/shopspring/decimal
+# golang.org/x/net v0.0.0-20190620200207-3b0461eec859
+golang.org/x/net/websocket
+# golang.org/x/tools v0.0.0-20190909214602-067311248421
+golang.org/x/tools/godoc/static
+golang.org/x/tools/playground
+golang.org/x/tools/playground/socket
+golang.org/x/tools/present
+golang.org/x/tools/godoc/golangorgenv
