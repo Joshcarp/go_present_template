@@ -6,12 +6,22 @@ Software Engineer, ANZ
 joshua.carpeggiani@anz.com
 : Software engineer working with go for about a year; decimal project, go-course
 
+* 
+.image img/twitter.png 500 _
 * Floating point numbers
 .play ../examples/floatExample.go /^func main/,/^}/
-- floats aren't sufficient for precision
+
+
+* Floating point numbers
+.play ../examples/floats/floatRound.go /^func main/,/^}/
+
+* Floating point numbers
+.play ../examples/floats/floatAdd.go /^func main/,/^}/
+
 : This is the problem that we've learnt to live with
 : Floats are inaccurate
 : This is the problem I want to show alternatives for
+
 
 : And to fix this, we need to go back a little bit to school; 
 
@@ -41,11 +51,6 @@ joshua.carpeggiani@anz.com
 : And now arises the question of how to represent this in a bunch of bits?
 : We can divide up just a standard 32 bit integer into the sign exponent and significand 
 : but there's a problem: we can't represent decimal fractions 
-
-* Floating point numbers
-.html html/floatingpointbits.html
-.play ../examples/floatExample.go /^func main/,/^}/
-- floats aren't sufficient for precision
 
 * The problem with floating point numbers
 Repeated decimal numbers:
@@ -117,21 +122,6 @@ shopspring seems to be unsupported; last commit was June 2018
 
 
 * Portability and Speed
-
-* 1930's 
-- Konrad Zuse invents the first binary, programmable computer.
-.image img/Z1.jpeg
-- Ability of floating point calculation of 24 bits
-- Comes up with idea of +- inf, and NaN (Not a number) for special cases
-: This guy names Konrad Zuse came up with a way of storing "floating point numbers"
-
-* Next 50 years
-- floating point numbers implemented slightly differently
-- Rounding attributes?
-- Rounding to infinity?
-- does -0 == +0 ?
-- 1/0 or 0/0????
-
 
 * 1980
 .image img/8087.jpg 200 _

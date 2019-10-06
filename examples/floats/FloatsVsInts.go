@@ -3,8 +3,9 @@ package main
 import "fmt"
 
 func main() {
-	for i := 0; i < 33554490; i++ {
-		if int(float32(i)) != i {
+
+	for i := 0; i < 16777217; i++ {
+		if int(float64(i)) != i {
 			fmt.Println(i, float32(i))
 			panic("")
 		}
