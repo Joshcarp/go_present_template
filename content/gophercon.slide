@@ -4,20 +4,43 @@ Tags: decimal, floating point, fixed precision, IEEE 754R
 Joshua Carpeggiani
 Software Engineer, ANZ
 joshua.carpeggiani@anz.com
+: Software engineer working with go for about a year; decimal project, go-course
 
 * Floating point numbers
 .play ../examples/floatExample.go /^func main/,/^}/
 - floats aren't sufficient for precision
+: This is the problem that we've learnt to live with
+: Floats are inaccurate
+: This is the problem I want to show alternatives for
+
+: And to fix this, we need to go back a little bit to school; 
 
 * Scientific notation
 
 .html html/basic.html
+: Scientific notation is at the base of what a floating point number is;
+: We can take out number, pick-up the decimal point and move it to wherever we want
+: Then when we're representing the number, we multiply it by 10 to the power
+: of the amount of decimal shifts we moved our point
+
+: Ths allows us to store really really large numbers and also really really small numbers
+: without having to fill up our screen with zeros
+
 
 * Binary floating point numbers
 .html html/basicBinary.html
 
+: The same can be done with binary numbers
+: note instead of a 10 we now have a 2 as the base, because we're counting in base 2
+
+
 * Floating point numbers
+.html html/basicBinary.html
+
 .html html/floatingpointbits.html
+: And now arises the question of how to represent this in a bunch of bits?
+: We can divide up just a standard 32 bit integer into the sign exponent and significand 
+: but there's a problem: we can't represent decimal fractions 
 
 * Floating point numbers
 .html html/floatingpointbits.html
@@ -258,6 +281,8 @@ Benchmarks are located at
 2. Portability ✓
 3. Speed ✗ (not yet)
 
+* IEEE 754
+idea
 * Looking forward
 - More optimisation
 - Implement 128 and 64 bit
