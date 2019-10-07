@@ -13,6 +13,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/ericlagergren/decimal v0.0.0-20190729173012-f05d33913e5a h1:xHtz7D2MuhqTuuK2ho+376HVrC8vndeXw2McnBIJhUE=
 github.com/ericlagergren/decimal v0.0.0-20190729173012-f05d33913e5a/go.mod h1:mdYyfAkzn9kyJ/kMk/7WE9ufl9lflh+2NvecQ5mAghs=
+github.com/joshcarp/decimal v0.0.0-20190902074125-534ecd93598a h1:swZAvNGT+Goyrgu96b8//A7GZLbVH3XYShQIIHu3rd4=
+github.com/joshcarp/decimal v0.0.0-20190902074125-534ecd93598a/go.mod h1:IqQnTv8slPwS/k2smjctPgUGCBoOQfmEVaRE+nuB+J8=
 github.com/lib/pq v1.0.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
 github.com/pkg/errors v0.8.0 h1:WdK/asTD0HN+q6hsWO3/vpuAkAr+tw6aNJNDFFf0+qw=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=

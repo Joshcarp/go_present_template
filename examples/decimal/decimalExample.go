@@ -9,8 +9,11 @@ import (
 func main() {
 	a := decimal.MustParseDecimal64("0.1")
 	b := decimal.MustParseDecimal64("0.3")
-	c := decimal.NewDecimal64FromInt64(3)
 
-	fmt.Printf("%.1f + %.1f + %.1f == %.1f; %v\n", a, a, a, b, c.Mul(a) == b)
+	three := decimal.MustParseDecimal64("3")
+
+	fmt.Printf("3*a == b; %v\n", three.Mul(a) == b)
+
+	fmt.Printf("%.20f %.20f\n", a, b)
 
 }
