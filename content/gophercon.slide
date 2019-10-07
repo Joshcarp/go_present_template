@@ -12,6 +12,8 @@ joshua.carpeggiani@anz.com
 * Floating point numbers
 .play ../examples/floatExample.go /^func main/,/^}/
 
+* Floating point numbers
+.play ../examples/TimeRounding.go /^func main/,/^}/
 
 * Floating point numbers
 .play ../examples/floats/floatRound.go /^func main/,/^}/
@@ -19,11 +21,21 @@ joshua.carpeggiani@anz.com
 * Floating point numbers
 .play ../examples/floats/floatAdd.go /^func main/,/^}/
 
-: This is the problem that we've learnt to live with
-: Floats are inaccurate
-: This is the problem I want to show alternatives for
+* Floating point numbers
+- not even deterministic across architectures:
+    int main(void) {
+        double a = 1.0; 
+        double b = 3.0; 
+        double f = a / b;
+        printf("%.50f", f);
+    }
 
-: And to fix this, we need to go back a little bit to school; 
+ 
+ 
+    x86 result: 0.33333333333333333334236835143737920361672877334058
+
+    arm result: 0.33333333333333331482961625624739099293947219848633
+
 
 * Scientific notation
 
@@ -155,13 +167,6 @@ Base 10 counting system instead of base 2
 * A new decimal library in go
 - Follows 2008-r standard
 - Allows for future hardware support and optimisations
-
-* Benchmarking
-
-- float64
-- anz-bank/decimal
-Benchmarks are located at
-.link https://github.com/joshcarp/decimal-slides
 
 * Arithmetic benchmarks - Add
 .image img/Add_dec.png 500 _
