@@ -54,11 +54,11 @@ def generate_graph(responsetime_filename):
         plt.xticks(x, element.LibraryName)
         plt.xticks(rotation=10)
 
-        plt.ylabel('ms/operation')
+        plt.ylabel('ns/operation')
         plt.title(operation + " Benchmark")
-        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}_6.png", dpi=300, figsize=(50,25),  bbox_inches = 'tight')
+        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}_new.png", dpi=300, figsize=(50,25),  bbox_inches = 'tight')
 
 if __name__ == "__main__":
     # os.system("go test -bench=. > results.txt")
-    convertToCsv("this.txt")
+    convertToCsv("responses.txt")
     generate_graph("results.csv")

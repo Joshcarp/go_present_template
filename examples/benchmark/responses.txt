@@ -1,0 +1,18 @@
+goos: linux
+goarch: amd64
+pkg: github.com/Joshcarp/decimal-slides/examples/benchmark
+BenchmarkDecimal/ddAdd.decTest_anz.Decimal-4                    1        2170689053 ns/op
+BenchmarkDecimal/ddAdd.decTest_float64-4                     200           6951334 ns/op
+BenchmarkDecimal/ddAdd.decTest_bigFloat-4                     20          63390074 ns/op
+BenchmarkDecimal/ddMultiply.decTest_anzDecimal-4               1        2865402804 ns/op
+BenchmarkDecimal/ddMultiply.decTest_float64-4                200           9727657 ns/op
+BenchmarkDecimal/ddMultiply.decTest_bigFloat-4                20          97846910 ns/op
+BenchmarkDecimal/ddAbs.decTest_anzDecimal-4                    1        2823384716 ns/op
+BenchmarkDecimal/ddAbs.decTest_float64-4                     200          10419704 ns/op
+BenchmarkDecimal/ddAbs.decTest_bigFloat-4                     10         102146962 ns/op
+BenchmarkDecimal/ddDivide.decTest_anzDecimal-4                 1        8894311527 ns/op
+BenchmarkDecimal/ddDivide.decTest_float64-4                  100          14844495 ns/op
+BenchmarkDecimal/ddDivide.decTest_bigFloat-4                  10         130574324 ns/op
+BenchmarkANZ-4                                          2000000000               0.06 ns/op
+PASS
+ok      github.com/Joshcarp/decimal-slides/examples/benchmark   34.411s

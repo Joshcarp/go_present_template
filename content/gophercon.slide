@@ -23,13 +23,6 @@ joshua.carpeggiani@anz.com
 : Floats are inaccurate
 : This is the problem I want to show alternatives for
 
-* Floating point numbers
-
-- Compounding errors
-- Need for exact numbers
-
-.play ../examples/TimeRounding.go /^func main/,/^}/
-
 : And to fix this, we need to go back a little bit to school; 
 
 * Scientific notation
@@ -71,30 +64,6 @@ Repeated binary numbers:
 * Why?
 .image img/BinDec.png _ 500
 
-
-* Go Basic types
-
-	bool
-
-	string
-
-	int  int8  int16  int32  int64
-	uint uint8 uint16 uint32 uint64 uintptr
-
-	byte // alias for uint8
-
-	rune // alias for int32
-	     // represents a Unicode code point
-
-	float32 float64
-
-	complex64 complex128
-
-
-
-* Usage of decimal libraries
-.image img/decimalSurvey.png 600 _
-
 * Requirements of a number library: Binary floats
 1. Accuracy ✘
 2. Portability ?
@@ -114,12 +83,13 @@ Base 10 counting system instead of base 2
 * Usage of decimal libraries
 .image img/decimalSurvey.png 600 _
 
+* Usage of decimal libraries
+.image img/decimalSurvey.png 600 _
+
 * Existing Go decimal datatypes
 .link https://github.com/ericlagergren/decimal/ github.com/ericlagergren/decimal
 .link https://github.com/shopspring/decimal github.com/shopspring/decimal
 shopspring seems to be unsupported; last commit was June 2018
-
-
 
 * Portability and Speed
 
@@ -173,6 +143,8 @@ shopspring seems to be unsupported; last commit was June 2018
 
 * ADDSD
 "Add Scalar Double-Precision Floating-Point Values"
+* Benchmarking
+.image img/Add_new.png 500 _
 
 * Requirements of a number library: Binary floats
 1. Accuracy ✘
@@ -191,22 +163,14 @@ shopspring seems to be unsupported; last commit was June 2018
 - Allows for future hardware support and optimisations
 
 * Benchmarking
-Testing
-- IBM test suite online with _81,300_ test cases
-.link http://speleotrove.com/decimal/
-Note: these benchmarks are testing edgecases
-
-* Benchmarking
 
 - float64
 - anz-bank/decimal
-- shopspring/decimal
-- ericlagergren/decimal
 Benchmarks are located at
 .link https://github.com/joshcarp/decimal-slides
 
 * Arithmetic benchmarks - Add
-.image img/Add_5.png 500 _
+.image img/Add_dec.png 500 _
 
 
 * Binary floating point Assembler
@@ -271,8 +235,6 @@ Benchmarks are located at
 2. Portability ✓
 3. Speed ✗ (not yet)
 
-* IEEE 754
-idea
 * Looking forward
 - More optimisation
 - Implement 128 and 64 bit

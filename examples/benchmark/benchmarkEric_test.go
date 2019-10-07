@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"fmt"
+	"math/big"
 	"os"
 	"regexp"
 	"strconv"
@@ -39,14 +41,13 @@ type testcase struct {
 }
 
 var prettyNames = map[string]string{
-	"float64":                "float64",
-	"decimal.Big":            "ericlagergrenDecimal",
-	"decimal.Decimal64":      "anzDecimal",
-	"decimal.Decimal":        "shopspringDecimal",
-	"anz_optimised.DecParts": "anzDecimal"}
+	"float64":           "float64",
+	"decimal.Decimal64": "anzDecimal",
+	"big.Float":         "bigFloat",
+}
 var fl64 float64
-var typelist = []interface{}{decimal.Decimal64{}, fl64, ericlagergren.Big{}, shopspring.Decimal{}, anz_optimised.DecParts{}}
-var typeNamelist = []string{"decimal.Decimal64", "float64", "decimal.Big", "decimal.Decimal", "anz_optimised.DecParts"}
+var typelist = []interface{}{decimal.Decimal64{}, fl64, big.Float{}}
+var typeNamelist = []string{"decimal.Decimal64", "float64", "big.Float"}
 
 func BenchmarkDecimal(b *testing.B) {
 	// map a type (decimal.Decimal64 eg) to a list of testcases
@@ -93,11 +94,18 @@ func BenchmarkDecimal(b *testing.B) {
 func ParseDecimal(val1, val2 string, v interface{}, op string) (test testcase) {
 	switch v.(type) {
 	case float64:
-		c, _ := strconv.ParseFloat(val2, 64)
+		c, _ := strconv.ParseFloat(val1, 64)
 		d, _ := strconv.ParseFloat(val2, 64)
 
-		test.v1 = &c
-		test.v2 = &d
+		test.v1 = c
+		test.v2 = d
+	case big.Float:
+		c := big.Float{}
+		d := big.Float{}
+		fmt.Sscan(val1, c)
+		fmt.Sscan(val2, d)
+		test.v1 = c
+		test.v2 = d
 	case ericlagergren.Big:
 		c := ericlagergren.Big{}
 		d := ericlagergren.Big{}
@@ -106,8 +114,8 @@ func ParseDecimal(val1, val2 string, v interface{}, op string) (test testcase) {
 	case decimal.Decimal64:
 		c, _ := decimal.ParseDecimal64(val1)
 		d, _ := decimal.ParseDecimal64(val2)
-		test.v1 = &c
-		test.v2 = &d
+		test.v1 = c
+		test.v2 = d
 	case shopspring.Decimal:
 		c, _ := shopspring.NewFromString(val1)
 		d, _ := shopspring.NewFromString(val2)
@@ -135,16 +143,20 @@ func runtests(test testcase, t interface{}) {
 	}
 	switch (t).(type) {
 	case float64:
-		a := test.v1.(*float64)
-		b := test.v2.(*float64)
+		a := test.v1.(float64)
+		b := test.v2.(float64)
 		execOpFloat(a, b, test.op)
+	case big.Float:
+		a := test.v1.(big.Float)
+		b := test.v2.(big.Float)
+		execOpBig(a, b, test.op)
 	case ericlagergren.Big:
 		a := test.v1.(*ericlagergren.Big)
 		b := test.v2.(*ericlagergren.Big)
 		execOpEric(a, b, test.op)
 	case decimal.Decimal64:
-		a := test.v1.(*decimal.Decimal64)
-		b := test.v1.(*decimal.Decimal64)
+		a := test.v1.(decimal.Decimal64)
+		b := test.v1.(decimal.Decimal64)
 		execOp(a, b, test.op)
 	case shopspring.Decimal:
 		a := test.v1.(*shopspring.Decimal)
@@ -216,16 +228,16 @@ func execOpEric(a, b *ericlagergren.Big, op string) {
 
 	}
 }
-func execOp(a, b *decimal.Decimal64, op string) {
+func execOp(a, b decimal.Decimal64, op string) {
 	switch op {
 	case "add":
 		for i := 0; i < numloops; i++ {
-			a.Add(*b)
+			a.Add(b)
 
 		}
 	case "multiply":
 		for i := 0; i < numloops; i++ {
-			a.Mul(*b)
+			a.Mul(b)
 		}
 	case "abs":
 		for i := 0; i < numloops; i++ {
@@ -233,7 +245,31 @@ func execOp(a, b *decimal.Decimal64, op string) {
 		}
 	case "divide":
 		for i := 0; i < numloops; i++ {
-			a.Quo(*b)
+			a.Quo(b)
+		}
+	default:
+	}
+	// return decimal.Zero64
+}
+func execOpBig(a, b big.Float, op string) {
+
+	switch op {
+	case "add":
+		for i := 0; i < numloops; i++ {
+			a.Add(&a, &b)
+
+		}
+	case "multiply":
+		for i := 0; i < numloops; i++ {
+			a.Mul(&a, &b)
+		}
+	case "abs":
+		for i := 0; i < numloops; i++ {
+			a.Abs(&a)
+		}
+	case "divide":
+		for i := 0; i < numloops; i++ {
+			a.Quo(&a, &b)
 		}
 	default:
 	}
@@ -261,22 +297,22 @@ func execOpShop(a, b *shopspring.Decimal, op string) {
 		}
 	}
 }
-func execOpFloat(a, b *float64, op string) {
+func execOpFloat(a, b float64, op string) {
 	var e float64
 	switch op {
 	case "add":
 		for i := 0; i < numloops; i++ {
-			e = *a + *b
+			e = a + b
 		}
 	case "multiply":
 		for i := 0; i < numloops; i++ {
-			e = *a * *b
+			e = a * b
 		}
 	case "abs":
-// 		e = math.Abs((float64)a)
+		// 		e = math.Abs((float64)a)
 	case "divide":
 		for i := 0; i < numloops; i++ {
-			e = *a / *b
+			e = a / b
 		}
 	default:
 
