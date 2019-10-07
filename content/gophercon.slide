@@ -7,7 +7,7 @@ joshua.carpeggiani@anz.com
 : Software engineer working with go for about a year; decimal project, go-course
 
 * 
-.image img/twitter.png 500 _
+"If I had a dime for every time I've seen someone use FLOAT to store currency, I'd have $999.997634." - Bill Karwin
 
 * Floating point numbers
 .play ../examples/floatExample.go /^func main/,/^}/
