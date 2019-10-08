@@ -19,15 +19,12 @@ joshua.carpeggiani@anz.com
 .play ../examples/floats/floatRound.go /^func main/,/^}/
 
 * Floating point numbers
-.play ../examples/floats/floatAdd.go /^func main/,/^}/
-
-* Floating point numbers
 - not even deterministic across architectures:
     int main(void) {
-        double a = 1.0; 
-        double b = 3.0; 
-        double f = a / b;
-        printf("%.50f", f);
+        long double a = 1.0; 
+        long double b = 3.0; 
+        double f = (a / b) - (1.0/3.0);
+        printf("%.50f\n", f);
     }
 
  
@@ -36,6 +33,11 @@ joshua.carpeggiani@anz.com
 
     arm result: 0.33333333333333331482961625624739099293947219848633
 
+* Floating point numbers
+.image img/oddVsEven.png 550 _
+
+* Floating point numbers
+.play ../examples/floats/floatAdd.go /^func main/,/^}/
 
 * Scientific notation
 
@@ -156,13 +158,6 @@ Base 10 counting system instead of base 2
 1. Accuracy ✘
 2. Portability ✓
 3. Speed ✓
-
-* Requirements of a number library: Binary floats
-1. Accuracy ✘
-2. Portability ✓
-3. Speed ✓
-(Portability and Speed kinda come together)
-
 
 * A new decimal library in go
 - Follows 2008-r standard

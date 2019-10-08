@@ -56,7 +56,7 @@ def generate_graph(responsetime_filename):
 
         plt.ylabel('ns/operation')
         plt.title(operation + " Benchmark")
-        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}_new.png", dpi=300, figsize=(50,25),  bbox_inches = 'tight')
+        plt.savefig(os.path.abspath('../../content/')+f"/img/{operation}_new.png", dpi=300, figsize=(10,25),  bbox_inches = 'tight')
 
 if __name__ == "__main__":
     # os.system("go test -bench=. > results.txt")
